@@ -1,0 +1,80 @@
+/*---------------------------------------
+  SIDEBAR COLLAPSED STATE
+-----------------------------------------*/
+body.sidebar-collapsed #sidebarMenu {
+    margin-left: -25%;
+    /* Hide sidebar */
+    transition: all 0.3s ease;
+}
+
+body.sidebar-collapsed #mainContent {
+    width: 100%;
+    /* Expand content */
+    flex: 0 0 100%;
+    max-width: 100%;
+    transition: all 0.3s ease;
+}
+
+#sidebarMenu,
+#mainContent {
+    transition: all 0.3s ease;
+}
+
+/* Ensure toggle button is visible and positioned correctly on desktop */
+#desktopSidebarToggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+body:not(.sidebar-collapsed) #desktopSidebarToggle {
+    left: 20px;
+    /* Keep it visible even when sidebar is open if desired, or move it */
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 767px) {
+    body.sidebar-collapsed #sidebarMenu {
+        margin-left: 0;
+        /* Default bootstrap behavior handles mobile */
+    }
+
+    body.sidebar-collapsed #mainContent {
+        width: 100%;
+    }
+}
+
+/* RESPONSIVE FIXES */
+.hero-section {
+    min-height: 100vh;
+    /* Ensure full height */
+    height: auto;
+}
+
+.custom-block {
+    max-width: 90%;
+    /* Prevent overflow on small screens */
+    width: 360px;
+    height: auto;
+    aspect-ratio: 1/1;
+}
+
+@media screen and (max-width: 991px) {
+    .custom-block {
+        display: flex !important;
+        /* Force display on smaller screens if hidden */
+        position: relative;
+        bottom: auto;
+        right: auto;
+        margin: 20px auto;
+        transform: none;
+    }
+
+    .hero-section {
+        padding-bottom: 50px;
+    }
+}
