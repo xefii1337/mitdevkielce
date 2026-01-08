@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pl">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Szczegóły produktu - Sklep Informatyczny Kielce. Sprawdź specyfikację, cenę i dostępność. Najlepsze części i akcesoria komputerowe w Kielcach.">
+    <meta name="keywords" content="sklep komputerowy kielce, części pc, akcesoria, informatyk kielce">
+    <meta name="author" content="Mobilny Informatyk Kielce">
+    <link rel="icon" type="text/css" href="images/icon.png">
+
+    <title>Szczegóły Produktu - Sklep Informatyczny Kielce</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/mit-dev.css" rel="stylesheet">
+    <link href="css/mit-dev-sidebar.css" rel="stylesheet">
+
+    <style>
+        .gallery-thumb {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-thumb:hover,
+        .gallery-thumb.active {
+            opacity: 1;
+            border: 2px solid var(--primary-color);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <button class="navbar-toggler d-md-none collapsed" type="button" data-bs-toggle="collapse"
+                data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <nav id="sidebarMenu" class="col-md-4 col-lg-3 d-md-block sidebar collapse p-0">
+                <div
+                    class="position-sticky sidebar-sticky d-flex flex-column justify-content-center align-items-center">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="images/okrlogo.png" class="logo-image img-fluid rounded-circle" align="center"
+                            alt="logo">
+                    </a>
+
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a class="nav-link" href="index.html">Strona Główna</a></li>
+                        <li class="nav-item"><a class="nav-link active" href="products.html">Powrót do Sklepu</a></li>
+                    </ul>
+                </div>
+            </nav>
+
+            <main class="col-md-8 ms-sm-auto col-lg-9 p-0">
+
+                <section class="section-padding" style="padding-top: 100px;">
+                    <div class="container">
+                        <div id="product-loading" class="text-center">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="visually-hidden">Ładowanie...</span>
+                            </div>
+                        </div>
+
+                        <div id="product-content" class="row d-none">
+                            <!-- Gallery Column -->
+                            <div class="col-lg-6 col-12 mb-5 mb-lg-0">
+                                <div class="card border-0 shadow-sm">
+                                    <div class="p-0 bg-light text-center position-relative" id="main-image-container"
+                                        style="height: 400px; overflow: hidden;">
+                                        <button
+                                            class="btn rounded-circle shadow-sm position-absolute top-50 start-0 translate-middle-y ms-2"
+                                            id="prev-image-btn"
+                                            style="z-index: 10; background-color: #FFCC00; border: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi-chevron-left text-dark"></i>
+                                        </button>
+
+                                        <div id="carousel-track" class="d-flex h-100"
+                                            style="transition: transform 0.3s ease-in-out;">
+                                            <!-- Slides will be injected here -->
+                                        </div>
+
+                                        <button
+                                            class="btn rounded-circle shadow-sm position-absolute top-50 end-0 translate-middle-y me-2"
+                                            id="next-image-btn"
+                                            style="z-index: 10; background-color: #FFCC00; border: none; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="bi-chevron-right text-dark"></i>
+                                        </button>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex gap-2 overflow-auto" id="gallery-thumbs">
+                                            <!-- Thumbnails injected here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Details Column -->
+                            <div class="col-lg-6 col-12">
+                                <div class="ps-lg-4">
+                                    <span class="badge bg-warning text-dark mb-2" id="product-category"></span>
+                                    <h1 class="fw-bold mb-3" id="product-name"></h1>
+                                    <h2 class="text-primary fw-bold mb-4" id="product-price"></h2>
+
+                                    <div class="mb-4">
+                                        <h5 class="fw-bold"><i class="bi-geo-alt-fill text-danger me-2"></i>Lokalizacja
+                                        </h5>
+                                        <p class="text-muted" id="product-location">Brak danych o lokalizacji</p>
+                                    </div>
+
+                                    <div class="mb-5">
+                                        <h5 class="fw-bold">Opis Produktu</h5>
+                                        <p class="lead text-muted" id="product-desc" style="font-size: 1rem;"></p>
+                                    </div>
+
+                                    <div class="d-grid gap-2">
+                                        <a href="index.html#section_5" class="btn btn-primary btn-lg text-white">
+                                            <i class="bi-envelope-fill me-2"></i> Zapytaj o ten produkt
+                                        </a>
+                                        <a href="tel:694297445" class="btn btn-outline-dark btn-lg">
+                                            <i class="bi-telephone-fill me-2"></i> Zadzwoń: 694 297 445
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="product-error" class="alert alert-danger d-none text-center">
+                            Nie znaleziono produktu.
+                        </div>
+                    </div>
+                </section>
+
+                <footer class="site-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12 col-12 text-center">
+                                <p class="copyright-text">Copyright © 2024 Mobilny Informatyk Kielce</p>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+
+            </main>
+        </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="js/supabase-client.js"></script>
+    <script type="module" src="js/mit-dev-product-details.js"></script>
+
+</body>
+
+</html>

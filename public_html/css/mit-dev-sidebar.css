@@ -78,3 +78,81 @@ body:not(.sidebar-collapsed) #desktopSidebarToggle {
         padding-bottom: 50px;
     }
 }
+
+/* VALUATION SECTION STYLES */
+.valuation-section {
+    background-color: var(--white-color);
+}
+
+.valuation-section .custom-form {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.valuation-section .form-label {
+    font-weight: bold;
+    color: var(--dark-color);
+    margin-bottom: 10px;
+}
+
+.valuation-section .form-control {
+    border: 2px solid #eee;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 16px;
+    transition: all 0.3s;
+}
+
+.valuation-section .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(255, 204, 0, 0.25);
+}
+
+.valuation-section #total-valuation {
+    font-size: 2rem;
+    color: var(--primary-color) !important;
+    transition: transform 0.2s ease;
+    display: inline-block;
+}
+
+.valuation-section .price-list-thumb {
+    background: var(--dark-color);
+    padding: 20px;
+    border-radius: 15px;
+    color: white;
+}
+
+.valuation-section .price-list-thumb h6 {
+    color: white;
+    margin: 0;
+    align-items: center;
+}
+
+#add-disk-btn {
+    margin-top: 10px;
+}
+
+/* PRICE LIST IMPROVEMENTS */
+.price-list-thumb {
+    margin-bottom: 15px;
+    /* Increased spacing */
+}
+
+.price-list-thumb h6 {
+    align-items: center;
+    /* Vertically center text and divider */
+}
+
+.price-list-thumb-divider {
+    margin: 0 15px;
+    /* Even spacing around divider */
+    background: #e9ecef;
+    /* Lighter color for better aesthetics */
+    height: 1px;
+    /* Thinner line */
+    position: relative;
+    top: 2px;
+    /* Slight optical adjustment */
+}

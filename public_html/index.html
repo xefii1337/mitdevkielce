@@ -5,11 +5,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta name="description"
+        content="Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Naprawa laptopów, PC, pogotowie komputerowe, części i akcesoria. Dojazd do klienta.">
+    <meta name="keywords"
+        content="sklep internetowy informatyczny, informatyk kielce, kielce informatyk, sklep informatyczny, serwis informatyczny, serwis laptopów, serwis, serwis PC, naprawa komputerów kielce, pogotowie komputerowe, części komputerowe, modernizacja komputerów">
+    <meta name="author" content="Mobilny Informatyk Kielce">
     <link rel="icon" type="text/css" href="images/icon.png">
 
-    <title>Mobilny Informatyk Kielce</title>
+    <title>Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy</title>
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ComputerStore",
+      "name": "Mobilny Informatyk Kielce",
+      "image": "images/okrlogo.png",
+      "description": "Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Oferujemy naprawę laptopów, komputerów PC oraz sprzedaż części i akcesoriów.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Kielce",
+        "addressRegion": "Świętokrzyskie",
+        "addressCountry": "PL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "50.866077",
+        "longitude": "20.628568"
+      },
+      "url": "https://mobilnyinformatyk.kielce.pl",
+      "telephone": "+48694297445",
+      "priceRange": "$$"
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
@@ -21,11 +48,169 @@
 
     <link href="css/bootstrap-icons.css" rel="stylesheet">
 
-    <link href="css/templatemo-barber-shop.css" rel="stylesheet">
-    <link href="css/custom-sidebar.css" rel="stylesheet">
+    <link href="css/mit-dev.css" rel="stylesheet">
+    <link href="css/mit-dev-sidebar.css" rel="stylesheet">
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
 
 
 
+    <style>
+        /* Booking Calendar Custom Styles */
+        /* Booking Calendar Custom Styles */
+        #booking-calendar {
+            font-family: 'Unbounded', sans-serif;
+            border: none;
+        }
+
+        #booking-calendar .fc-toolbar {
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 1.5rem !important;
+        }
+
+        #booking-calendar .fc-toolbar-title {
+            font-size: 1.25rem !important;
+            font-weight: 700;
+            color: var(--dark-color);
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
+        #booking-calendar .fc-button-primary {
+            background-color: transparent !important;
+            border: 1px solid #dee2e6 !important;
+            color: var(--dark-color) !important;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem !important;
+            padding: 0.4rem 1rem !important;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        #booking-calendar .fc-button-primary:hover,
+        #booking-calendar .fc-button-primary.fc-button-active {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: #fff !important;
+        }
+
+        #booking-calendar .fc-col-header-cell {
+            background-color: transparent;
+            padding: 10px 0;
+            border: none;
+            border-bottom: 1px solid #eee;
+        }
+
+        #booking-calendar .fc-col-header-cell-cushion {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        #booking-calendar .fc-daygrid-day-number {
+            font-size: 0.9rem;
+            padding: 8px;
+            color: var(--dark-color);
+            font-weight: 500;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            border-radius: 50%;
+        }
+
+        #booking-calendar .fc-daygrid-day-top {
+            justify-content: center;
+            padding-top: 5px;
+        }
+
+        #booking-calendar .fc-daygrid-day-frame {
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            border: none;
+        }
+
+        #booking-calendar .fc-daygrid-day:hover .fc-daygrid-day-number {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+        }
+
+        #booking-calendar .fc-day-today .fc-daygrid-day-number {
+            background-color: var(--primary-color) !important;
+            color: #fff !important;
+        }
+
+        #booking-calendar .fc-day-today {
+            background-color: transparent !important;
+        }
+
+        #booking-calendar .fc-scrollgrid,
+        #booking-calendar td,
+        #booking-calendar th {
+            border: none !important;
+            /* Clean look without grid lines */
+        }
+
+        /* Time Slots */
+        .time-slot-btn {
+            font-family: 'Unbounded', sans-serif;
+            background-color: #fff;
+            border: 1px solid #eee;
+            color: var(--dark-color);
+            padding: 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+        }
+
+        .time-slot-btn:hover:not(:disabled) {
+            background-color: #fff;
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .time-slot-btn.selected {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(240, 173, 78, 0.3);
+        }
+
+        #booking-calendar .fc-timegrid-slot {
+            height: 3em !important;
+            /* Taller slots */
+        }
+
+        #booking-calendar .fc-timegrid-slot-label-cushion {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* Busy Event Style */
+        #booking-calendar .fc-event {
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #booking-calendar .fc-bg-event {
+            opacity: 0.6;
+        }
+    </style>
 </head>
 
 <body>
@@ -70,7 +255,27 @@
                         </li>
 
                         <li class="nav-item">
+                            <a class="nav-link" href="products.html">Sklep</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_valuation">Wycena</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link click-scroll" href="#section_booking">Umów wizytę</a>
+                        </li>
+
+                        <li class="nav-item">
                             <a class="nav-link click-scroll" href="#section_5">Kontakt</a>
+                        </li>
+
+                        <li class="nav-item border-top mt-3 pt-3" id="auth-nav-item">
+                            <a class="nav-link" href="login.html">Zaloguj / Zarejestruj</a>
+                        </li>
+
+                        <li class="nav-item d-none" id="user-nav-item">
+                            <!-- Old sidebar links removed, now using profile dropdown -->
                         </li>
                     </ul>
                 </div>
@@ -101,8 +306,7 @@
 
                         <h4><strong class="text-white">Kliknij i umów się na wizytę</strong></h4>
 
-                        <a href="https://www.facebook.com/profile.php?id=61573971965390&locale=pl_PL"
-                            class="smoothscroll btn custom-btn custom-btn-italic mt-3">Klik</a>
+                        <a href="#section_booking" class="smoothscroll btn custom-btn custom-btn-italic mt-3">Klik</a>
                     </div>
                 </section>
 
@@ -293,6 +497,217 @@
                                 </div>
                             </section>
 
+                            <section class="valuation-section section-padding" id="section_valuation">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12 text-center">
+                                            <h2 class="mb-5">Wycena PC</h2>
+                                        </div>
+
+                                        <div class="col-lg-8 col-12 mx-auto">
+                                            <div class="custom-form booking-form">
+                                                <div class="row">
+                                                    <div class="col-lg-12 col-12">
+                                                        <label for="gpu-select" class="form-label">Karta
+                                                            Graficzna</label>
+                                                        <select class="form-control" id="gpu-select">
+                                                            <option value="">Wybierz kartę graficzną</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-12">
+                                                        <label for="cpu-select" class="form-label">Procesor</label>
+                                                        <select class="form-control" id="cpu-select">
+                                                            <option value="">Wybierz procesor</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-12">
+                                                        <label for="mobo-select" class="form-label">Płyta Główna</label>
+                                                        <select class="form-control" id="mobo-select">
+                                                            <option value="">Wybierz płytę główną</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-12">
+                                                        <label for="ram-select" class="form-label">Pamięć RAM</label>
+                                                        <select class="form-control" id="ram-select">
+                                                            <option value="">Wybierz pamięć RAM</option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-12">
+                                                        <label class="form-label">Dyski</label>
+                                                        <div id="disks-container">
+                                                            <div class="disk-entry mb-3">
+                                                                <select class="form-control disk-select">
+                                                                    <option value="">Wybierz dysk</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button"
+                                                            class="btn custom-btn custom-border-btn btn-sm mb-4"
+                                                            id="add-disk-btn">Dodaj kolejny dysk</button>
+                                                    </div>
+
+                                                    <div class="col-lg-12 col-12 mt-4">
+                                                        <div class="price-list-thumb">
+                                                            <h6 class="d-flex justify-content-between">
+                                                                Szacowana wartość skupu:
+                                                                <strong id="total-valuation" class="text-primary">0
+                                                                    zł</strong>
+                                                            </h6>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="booking-section section-padding" id="section_booking">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-12 text-center">
+                                            <h2 class="mb-5">Umów wizytę online</h2>
+                                        </div>
+
+                                        <div class="col-lg-8 col-12 mx-auto">
+                                            <div class="custom-form booking-form">
+                                                <form id="booking-form" role="form">
+                                                    <div class="row">
+                                                        <div class="col-lg-6 col-12 mb-4">
+                                                            <label for="first-name" class="form-label">
+                                                                <i class="bi-person"></i> Imię
+                                                            </label>
+                                                            <input type="text" name="first-name" id="first-name"
+                                                                class="form-control" placeholder="Twoje imię" required>
+                                                        </div>
+
+                                                        <div class="col-lg-6 col-12 mb-4">
+                                                            <label for="last-name" class="form-label">
+                                                                <i class="bi-person-fill"></i> Nazwisko
+                                                            </label>
+                                                            <input type="text" name="last-name" id="last-name"
+                                                                class="form-control" placeholder="Twoje nazwisko"
+                                                                required>
+                                                        </div>
+
+                                                        <div class="col-lg-6 col-12 mb-4">
+                                                            <label for="phone" class="form-label">
+                                                                <i class="bi-telephone"></i> Numer telefonu
+                                                            </label>
+                                                            <input type="tel" name="phone" id="phone"
+                                                                class="form-control" placeholder="123-456-789" required>
+                                                        </div>
+
+                                                        <div class="col-lg-6 col-12 mb-4">
+                                                            <label for="address" class="form-label">
+                                                                <i class="bi-geo-alt"></i> Miejsce zamieszkania
+                                                            </label>
+                                                            <input type="text" name="address" id="address"
+                                                                class="form-control" placeholder="Ulica, numer domu"
+                                                                required>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12 mb-4">
+                                                            <label for="problem-desc" class="form-label">
+                                                                <i class="bi-chat-text"></i> Opis problemu
+                                                            </label>
+                                                            <textarea name="problem-desc" id="problem-desc"
+                                                                class="form-control" rows="3"
+                                                                placeholder="Opisz krótko problem..."
+                                                                required></textarea>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12 mb-4">
+                                                            <label class="form-label">
+                                                                <i class="bi-calendar-event"></i> Wybierz termin
+                                                            </label>
+                                                            <div class="row">
+                                                                <!-- Suggestion Container -->
+                                                                <div id="booking-suggestion-container"
+                                                                    class="col-12 mb-4">
+                                                                    <div
+                                                                        class="card border-0 shadow-sm p-4 bg-light text-center">
+                                                                        <h5 class="fw-bold mb-3">Najbliższy wolny
+                                                                            termin:</h5>
+                                                                        <h3 class="text-primary fw-bold mb-4"
+                                                                            id="suggested-date-display">
+                                                                            <div class="spinner-border text-primary spinner-border-sm"
+                                                                                role="status"></div>
+                                                                            Szukanie terminu...
+                                                                        </h3>
+                                                                        <div
+                                                                            class="d-flex justify-content-center gap-3 flex-wrap">
+                                                                            <button type="button"
+                                                                                class="btn btn-primary text-white px-4 py-2"
+                                                                                id="accept-suggestion-btn" disabled>
+                                                                                Wybierz ten termin
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                class="btn btn-outline-dark px-4 py-2"
+                                                                                id="show-calendar-btn">
+                                                                                Wybierz inny termin
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- Manual Calendar Container (Hidden initially) -->
+                                                                <div id="manual-calendar-container"
+                                                                    class="col-12 d-none">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-6 col-12 mb-4">
+                                                                            <div id="booking-calendar"
+                                                                                style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #dee2e6;">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div id="slots-column"
+                                                                            class="col-lg-6 col-12 mb-4 d-none">
+                                                                            <div id="slots-container" class="p-3"
+                                                                                style="background: white; border-radius: 8px; border: 1px solid #dee2e6; min-height: 100%;">
+                                                                                <h5 class="text-center mb-3">Dostępne
+                                                                                    godziny
+                                                                                </h5>
+                                                                                <div id="time-slots"
+                                                                                    class="d-grid gap-2"
+                                                                                    style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));">
+                                                                                    <p
+                                                                                        class="text-muted text-center w-100">
+                                                                                        Wybierz dzień z kalendarza</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12 mt-4 text-center">
+                                                            <button type="button"
+                                                                class="btn custom-btn custom-border-btn"
+                                                                id="check-slot-btn" style="display: none;">Sprawdź
+                                                                najbliższy termin</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
+                                                <div id="slot-result" class="mt-4 d-none">
+                                                    <div class="alert alert-info">
+                                                        <span id="booking-label">Proponowany termin:</span> <strong
+                                                            id="proposed-date"></strong>
+                                                    </div>
+                                                    <button type="button" class="btn custom-btn"
+                                                        id="confirm-booking-btn">Rezerwuj ten termin</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
 
 
 
@@ -307,15 +722,7 @@
 
 
 
-                                <div class="section-padding section-bg">
-                                    <div class="container">
-                                        <div class="row">
 
-                                            <div class="col-lg-8 col-12 mx-auto">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
 
                                 <div class="section-padding">
                                     <div class="container">
@@ -419,12 +826,84 @@
                             </footer>
                         </div>
 
+                        <!-- User Profile Dropdown (Fixed Top Right) -->
+                        <div id="user-profile-container" class="position-fixed d-none"
+                            style="z-index: 9999; top: 20px; right: 20px;">
+                            <div class="dropdown">
+                                <button class="btn btn-link text-white p-0" type="button" id="profileDropdown"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi-person-circle fs-2"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="profileDropdown">
+                                    <li><span class="dropdown-item-text text-muted small"
+                                            id="dropdown-user-email"></span></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item d-none" href="admin.html" id="dropdown-admin-link">Panel
+                                            Administratora</a></li>
+                                    <li><a class="dropdown-item text-danger" href="#"
+                                            id="dropdown-logout-btn">Wyloguj</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Booking Success Modal -->
+                        <div class="modal fade" id="bookingSuccessModal" tabindex="-1"
+                            aria-labelledby="bookingSuccessModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0 shadow">
+                                    <div class="modal-header border-0 bg-success text-white">
+                                        <h5 class="modal-title" id="bookingSuccessModalLabel">
+                                            <i class="bi-check-circle-fill me-2"></i> Rezerwacja Potwierdzona!
+                                        </h5>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body p-4 text-center">
+                                        <p class="lead mb-4">Twoja wizyta została pomyślnie zarezerwowana.</p>
+
+                                        <div class="card bg-light border-0 p-3 mb-3 text-start">
+                                            <p class="mb-2"><i class="bi-calendar-check text-primary me-2"></i>
+                                                <strong>Termin:</strong> <span id="success-modal-date"></span>
+                                            </p>
+                                            <p class="mb-2"><i class="bi-person text-primary me-2"></i> <strong>Imię i
+                                                    nazwisko:</strong> <span id="success-modal-name"></span></p>
+                                            <p class="mb-0"><i class="bi-telephone text-primary me-2"></i>
+                                                <strong>Telefon:</strong> <span id="success-modal-phone"></span>
+                                            </p>
+                                        </div>
+
+                                        <p class="small text-muted">Potwierdzenie zostało wysłane na nasz system.</p>
+                                    </div>
+                                    <div class="modal-footer border-0 justify-content-center">
+                                        <button type="button" class="btn btn-primary px-5" id="success-modal-close-btn"
+                                            data-bs-dismiss="modal">OK, Rozumiem</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- JAVASCRIPT FILES -->
                         <script src="js/jquery.min.js"></script>
-                        <script src="js/bootstrap.min.js"></script>
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                            crossorigin="anonymous"></script>
                         <script src="js/click-scroll.js"></script>
-                        <script src="js/custom.js"></script>
+                        <script type="module" src="js/mit-dev.js"></script>
                         <script type="module" src="js/supabase-client.js"></script>
+                        <script type="module" src="js/mit-dev-auth.js"></script>
+                        <script type="module" src="js/mit-dev-valuation.js"></script>
+                        <script type="module" src="js/mit-dev-booking.js"></script>
+
+                        <!-- EmailJS SDK -->
+                        <script type="text/javascript"
+                            src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+                        <script type="text/javascript">
+                            (function () {
+                                emailjs.init("YOUR_PUBLIC_KEY");
+                            })();
+                        </script>
 
 </body>
 

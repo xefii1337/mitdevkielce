@@ -1,41 +1,66 @@
+/* Profile Icon Styles */
+#user-profile-container .btn-link {
+  color: var(--white-color) !important;
+  transition: all 0.3s ease;
+  background-color: var(--primary-color);
+  width: 55px;
+  height: 55px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+#user-profile-container .btn-link:hover {
+  background-color: var(--secondary-color);
+  color: var(--white-color) !important;
+}
+
+#user-profile-container .dropdown-menu {
+  background-color: var(--white-color);
+  border: none;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);
+}
 
 :root {
-  --white-color:                  #ffffff;
-  --primary-color:                #FFCC00;
-  --secondary-color:              #FFD700;
-  --section-bg-color:             #FFD700;
-  --custom-btn-bg-color:          #c12828; /* przyciskiu */
-  --custom-btn-bg-hover-color:    #FDBB2D;
-  --dark-color:                   #000000;
-  --p-color:                      #717275;
-  --border-color:                 #c12828;
-  --link-hover-color:             #B22727;
+  --white-color: #ffffff;
+  --primary-color: #FFCC00;
+  --secondary-color: #FFD700;
+  --section-bg-color: #FFD700;
+  --custom-btn-bg-color: #c12828;
+  /* przyciskiu */
+  --custom-btn-bg-hover-color: #FDBB2D;
+  --dark-color: #000000;
+  --p-color: #717275;
+  --border-color: #c12828;
+  --link-hover-color: #B22727;
 
-  --body-font-family:             'Unbounded', cursive;
+  --body-font-family: 'Unbounded', cursive;
 
-  --h1-font-size:                 74px;
-  --h2-font-size:                 46px;
-  --h3-font-size:                 32px;
-  --h4-font-size:                 28px;
-  --h5-font-size:                 24px;
-  --h6-font-size:                 22px;
-  --p-font-size:                  20px;
-  --btn-font-size:                16px;
-  --copyright-font-size:          14px;
+  --h1-font-size: 74px;
+  --h2-font-size: 46px;
+  --h3-font-size: 32px;
+  --h4-font-size: 28px;
+  --h5-font-size: 24px;
+  --h6-font-size: 22px;
+  --p-font-size: 20px;
+  --btn-font-size: 16px;
+  --copyright-font-size: 14px;
 
-  --border-radius-large:          100px;
-  --border-radius-medium:         20px;
-  --border-radius-small:          10px;
+  --border-radius-large: 100px;
+  --border-radius-medium: 20px;
+  --border-radius-small: 10px;
 
-  --font-weight-thin:             200;
-  --font-weight-light:            300;
-  --font-weight-normal:           400;
-  --font-weight-bold:             700;
+  --font-weight-thin: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-bold: 700;
 }
 
 body {
   background-color: var(--white-color);
-  font-family: var(--body-font-family); 
+  font-family: var(--body-font-family);
 }
 
 
@@ -93,7 +118,7 @@ ul li {
   font-weight: var(--font-weight-light);
 }
 
-a, 
+a,
 button {
   touch-action: manipulation;
   transition: all 0.3s;
@@ -137,7 +162,7 @@ strong {
   opacity: 0.45;
 }
 
-.section-overlay + .container {
+.section-overlay+.container {
   position: relative;
 }
 
@@ -253,7 +278,7 @@ strong {
   position: relative;
 }
 
-#sidebarMenu .nav-link.active, 
+#sidebarMenu .nav-link.active,
 #sidebarMenu .nav-link:hover {
   color: var(--white-color);
 }
@@ -555,17 +580,33 @@ strong {
   BOOKING               
 -----------------------------------------*/
 .booking-section {
-  background-image: url('../images/vintage-chair-barbershop.jpg');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: cover;
-  background-position: center;
+  background: var(--white-color);
+  position: relative;
 }
 
 .booking-form {
   background: var(--white-color);
   border-radius: var(--border-radius-medium);
-  padding: 65px;
+  padding: 50px;
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+}
+
+.booking-form .form-label {
+  font-weight: var(--font-weight-bold);
+  color: var(--dark-color);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  /* Ensures alignment even if text wraps */
+}
+
+.booking-form .form-label i {
+  margin-right: 10px;
+  color: var(--primary-color);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  /* Prevents icon from shrinking */
 }
 
 
@@ -772,7 +813,7 @@ strong {
   .custom-block {
     display: none;
   }
-  
+
   .navbar {
     background-color: var(--dark-color);
   }
@@ -827,3 +868,13 @@ strong {
   }
 }
 
+/* Custom Selected Date in Calendar */
+.fc-day.custom-selected-day {
+  background-color: var(--primary-color) !important;
+  transition: background-color 0.3s;
+}
+
+.fc-day.custom-selected-day .fc-daygrid-day-number {
+  color: var(--dark-color) !important;
+  font-weight: bold;
+}
