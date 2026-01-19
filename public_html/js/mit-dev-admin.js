@@ -777,10 +777,17 @@ function renderValuationsTable(valuations) {
     // Edit listeners
     document.querySelectorAll('.edit-valuation-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
+            console.log('Edit button clicked');
             const btnEl = e.target.closest('button');
             const id = btnEl.dataset.id;
+            console.log('Valuation ID:', id);
+
             const valuation = valuations.find(v => v.id === id);
-            openValuationEditModal(valuation);
+            if (valuation) {
+                openValuationEditModal(valuation);
+            } else {
+                console.error('Valuation not found in local data');
+            }
         });
     });
 }
@@ -802,8 +809,14 @@ function openValuationEditModal(valuation) {
         });
     }
 
-    const modal = new bootstrap.Modal(document.getElementById('valuationEditModal'));
-    modal.show();
+    const modalEl = document.getElementById('valuationEditModal');
+    if (modalEl) {
+        document.body.appendChild(modalEl); // Fix z-index issues
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    } else {
+        alert('Błąd: Nie znaleziono modala edycji.');
+    }
 }
 
 // Save Valuation Edit
