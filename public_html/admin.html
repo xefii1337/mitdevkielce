@@ -595,6 +595,45 @@
         </div>
     </div>
 
+    <!-- Valuation Edit Modal -->
+    <div class="modal fade" id="valuationEditModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold">Edytuj Wycenę</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pt-4">
+                    <form id="valuation-edit-form">
+                        <input type="hidden" id="edit-valuation-id">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Kontakt</label>
+                            <input type="text" class="form-control" id="edit-client-contact" readonly>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Oferta dla Klienta (PLN)</label>
+                                <input type="number" class="form-control" id="edit-client-price" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-bold">Wartość Rynkowa (PLN)</label>
+                                <input type="number" class="form-control" id="edit-market-price" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Podzespoły (Tylko do odczytu)</label>
+                            <div id="edit-components-list" class="p-2 bg-light rounded small"></div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Anuluj</button>
+                    <button type="button" class="btn btn-primary" id="save-valuation-btn">Zapisz Zmiany</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT FILES -->
     <script src="js/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
