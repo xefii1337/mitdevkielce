@@ -742,6 +742,7 @@ function renderValuationsTable(valuations) {
             <td>${statusBadge}</td>
             <td>
                 <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-primary edit-valuation-btn" data-id="${val.id}" title="Edytuj"><i class="bi-pencil"></i></button>
                     <button class="btn btn-outline-success status-btn" data-id="${val.id}" data-status="accepted" title="Zaakceptuj"><i class="bi-check-lg"></i></button>
                     <button class="btn btn-outline-danger status-btn" data-id="${val.id}" data-status="rejected" title="Odrzuć"><i class="bi-x-lg"></i></button>
                 </div>
@@ -772,5 +773,66 @@ function renderValuationsTable(valuations) {
             }
         });
     });
+
+    // Edit listeners
+    document.querySelectorAll('.edit-valuation-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const btnEl = e.target.closest('button');
+            const id = btnEl.dataset.id;
+            const valuation = valuations.find(v => v.id === id);
+            openValuationEditModal(valuation);
+        });
+    });
 }
 
+function openValuationEditModal(valuation) {
+    if (!valuation) return;
+
+    document.getElementById('edit-valuation-id').value = valuation.id;
+    document.getElementById('edit-client-contact').value = valuation.client_contact;
+    document.getElementById('edit-client-price').value = valuation.client_price;
+    document.getElementById('edit-market-price').value = valuation.market_price;
+
+    // Show components
+    const list = document.getElementById('edit-components-list');
+    list.innerHTML = '';
+    if (valuation.components_json && Array.isArray(valuation.components_json)) {
+        valuation.components_json.forEach(c => {
+            list.innerHTML += `<div>${c.name} (${c.marketPrice} zł)</div>`;
+        });
+    }
+
+    const modal = new bootstrap.Modal(document.getElementById('valuationEditModal'));
+    modal.show();
+}
+
+// Save Valuation Edit
+document.addEventListener('click', async (e) => {
+    if (e.target && e.target.id === 'save-valuation-btn') {
+        const id = document.getElementById('edit-valuation-id').value;
+        const clientPrice = document.getElementById('edit-client-price').value;
+        const marketPrice = document.getElementById('edit-market-price').value;
+
+        try {
+            const { error } = await supabase
+                .from('valuations')
+                .update({
+                    client_price: clientPrice,
+                    market_price: marketPrice
+                })
+                .eq('id', id);
+
+            if (error) throw error;
+
+            alert('Zaktualizowano wycenę!');
+            const modalEl = document.getElementById('valuationEditModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            fetchValuations(); // Refresh table
+
+        } catch (err) {
+            console.error('Error updating valuation:', err);
+            alert('Błąd zapisu: ' + err.message);
+        }
+    }
+});
