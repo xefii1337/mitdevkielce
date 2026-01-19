@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (window.location.pathname.includes('admin.html')) {
         fetchDashboardData();
         fetchUsers();
+        fetchLoginMapData();
     }
 });
 
@@ -107,10 +108,15 @@ function initCalendar(appointments) {
 
             return {
                 html: `
-                    <div class="fc-event-main-frame">
-                        <div class="fc-event-time" style="font-weight:bold; font-size: 0.8em; color: ${statusColor}">${statusText} ${time}</div>
-                        <div class="fc-event-title-container">
+                    <div class="fc-event-main-frame d-flex align-items-center">
+                        <div class="fc-event-time me-2" style="font-weight:bold; font-size: 0.8em; color: ${statusColor}">${statusText}</div>
+                        <div class="fc-event-title-container flex-grow-1">
                             <div class="fc-event-title">${arg.event.title}</div>
+                        </div>
+                        <div class="ms-2">
+                            <button class="btn btn-sm btn-light py-0 px-1" title="Edytuj">
+                                <i class="bi-pencil-square text-primary"></i>
+                            </button>
                         </div>
                     </div>
                 `
@@ -135,31 +141,59 @@ function initCalendar(appointments) {
 let currentEventId = null;
 
 function openAppointmentModal(event) {
-    currentEventId = event.extendedProps.id || null; // We need ID from database. 
-    // Wait, we didn't map ID in initCalendar! Let's fix that in the map function above first.
+    currentEventId = event.extendedProps.id || event.id;
 
-    document.getElementById('modal-client-name').textContent = event.title;
-    document.getElementById('modal-date').textContent = event.start.toLocaleDateString('pl-PL');
-    document.getElementById('modal-time').textContent = event.start.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('modal-phone').textContent = event.extendedProps.phone;
-    document.getElementById('modal-address').textContent = event.extendedProps.address;
-    document.getElementById('modal-problem').textContent = event.extendedProps.problem;
+    // Populate inputs
+    // We stored full name in title, let's try to split it or use extendedProps if we had them separate
+    // Ideally we should have passed first_name and last_name in extendedProps.
+    // Let's assume title is "First Last" for now, but better to fix initCalendar to pass raw data.
+
+    // Better approach: Use the raw data we attached to extendedProps. 
+    // Wait, we need to update initCalendar to pass first_name and last_name.
+    // For now, let's try to split title.
+    const fullName = event.title.split(' ');
+    const firstName = fullName[0] || '';
+    const lastName = fullName.slice(1).join(' ') || '';
+
+    document.getElementById('modal-client-first-name').value = firstName;
+    document.getElementById('modal-client-last-name').value = lastName;
+
+    // Date and Time
+    // event.start is a Date object
+    const dateStr = event.start.toISOString().split('T')[0]; // YYYY-MM-DD
+    const timeStr = event.start.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+
+    document.getElementById('modal-date').value = dateStr;
+    document.getElementById('modal-time').value = timeStr;
+
+    document.getElementById('modal-phone').value = event.extendedProps.phone;
+    document.getElementById('modal-address').value = event.extendedProps.address;
+    document.getElementById('modal-problem').value = event.extendedProps.problem;
     document.getElementById('modal-status').value = event.extendedProps.status || 'confirmed';
 
-    // Store ID on the button for saving
+    // Store ID on buttons
     const saveBtn = document.getElementById('save-appointment-btn');
-    saveBtn.dataset.eventId = event.id; // FullCalendar event.id
+    saveBtn.dataset.eventId = currentEventId;
 
-    const modal = new bootstrap.Modal(document.getElementById('appointmentModal'));
-    modal.show();
+    const deleteBtn = document.getElementById('delete-appointment-btn');
+    deleteBtn.dataset.eventId = currentEventId;
+
+    const modalEl = document.getElementById('appointmentModal');
+    if (modalEl) {
+        // CRITICAL FIX: Move modal to body to avoid z-index/overflow issues
+        document.body.appendChild(modalEl);
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    } else {
+        alert('Błąd: Nie znaleziono okna wizyty. Odśwież stronę.');
+    }
 }
 
-// Add event listener for save button (outside initCalendar to avoid duplicates)
+// Save Appointment Changes
 document.addEventListener('click', async (e) => {
     if (e.target && e.target.id === 'save-appointment-btn') {
         const btn = e.target;
         const eventId = btn.dataset.eventId;
-        const newStatus = document.getElementById('modal-status').value;
 
         if (!eventId) return;
 
@@ -168,9 +202,30 @@ document.addEventListener('click', async (e) => {
         btn.disabled = true;
 
         try {
+            // Gather data
+            const firstName = document.getElementById('modal-client-first-name').value;
+            const lastName = document.getElementById('modal-client-last-name').value;
+            const dateVal = document.getElementById('modal-date').value;
+            const timeVal = document.getElementById('modal-time').value;
+            const phone = document.getElementById('modal-phone').value;
+            const address = document.getElementById('modal-address').value;
+            const problem = document.getElementById('modal-problem').value;
+            const status = document.getElementById('modal-status').value;
+
+            // Combine date and time
+            const fullDate = new Date(`${dateVal}T${timeVal}`);
+
             const { error } = await supabase
                 .from('appointments')
-                .update({ status: newStatus })
+                .update({
+                    first_name: firstName,
+                    last_name: lastName,
+                    appointment_date: fullDate.toISOString(),
+                    phone: phone,
+                    address: address,
+                    problem_desc: problem,
+                    status: status
+                })
                 .eq('id', eventId);
 
             if (error) throw error;
@@ -183,13 +238,54 @@ document.addEventListener('click', async (e) => {
             // Refresh dashboard/calendar
             fetchDashboardData();
 
-            alert('Status został zaktualizowany.');
+            alert('Wizyta została zaktualizowana.');
 
         } catch (err) {
-            console.error('Error updating status:', err);
-            alert('Błąd aktualizacji statusu.');
+            console.error('Error updating appointment:', err);
+            alert('Błąd aktualizacji: ' + err.message);
         } finally {
             btn.textContent = originalText;
+            btn.disabled = false;
+        }
+    }
+});
+
+// Delete Appointment
+document.addEventListener('click', async (e) => {
+    // Handle click on button or icon inside button
+    const btn = e.target.closest('#delete-appointment-btn');
+    if (btn) {
+        const eventId = btn.dataset.eventId;
+        if (!eventId) return;
+
+        if (!confirm('Czy na pewno chcesz trwale usunąć tę wizytę?')) return;
+
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
+        btn.disabled = true;
+
+        try {
+            const { error } = await supabase
+                .from('appointments')
+                .delete()
+                .eq('id', eventId);
+
+            if (error) throw error;
+
+            // Close modal
+            const modalEl = document.getElementById('appointmentModal');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+
+            // Refresh dashboard/calendar
+            fetchDashboardData();
+
+            alert('Wizyta została usunięta.');
+
+        } catch (err) {
+            console.error('Error deleting appointment:', err);
+            alert('Błąd usuwania: ' + err.message);
+            btn.innerHTML = originalText;
             btn.disabled = false;
         }
     }
@@ -522,4 +618,65 @@ if (window.location.pathname.includes('admin.html')) {
 }
 
 // Call fetchUsers in the main load function
+
+
+async function fetchLoginMapData() {
+    try {
+        const { data, error } = await supabase
+            .from('login_history')
+            .select('country_code');
+
+        if (error) {
+            // If table doesn't exist yet, just ignore (user needs to run SQL)
+            if (error.code === '42P01') {
+                console.warn('Login history table missing.');
+                return;
+            }
+            throw error;
+        }
+
+        // Aggregate data
+        const countryCounts = {};
+        data.forEach(row => {
+            const code = row.country_code; // e.g. "PL"
+            if (code) {
+                countryCounts[code] = (countryCounts[code] || 0) + 1;
+            }
+        });
+
+        // Initialize map
+        const mapEl = document.getElementById('world-map');
+        if (mapEl) {
+            // Clear previous content if any
+            mapEl.innerHTML = '';
+
+            new jsVectorMap({
+                selector: '#world-map',
+                map: 'world',
+                visualizeData: {
+                    scale: ['#eeeeee', '#ffc107'], // Gray to Primary Yellow
+                    values: countryCounts
+                },
+                regionStyle: {
+                    initial: {
+                        fill: '#e9ecef'
+                    },
+                    hover: {
+                        fill: '#ffc107'
+                    }
+                },
+                onRegionTooltipShow(event, tooltip, code) {
+                    const count = countryCounts[code] || 0;
+                    tooltip.text(
+                        `<h5>${tooltip.text()}</h5>` +
+                        `<p class="mb-0">Logowań: ${count}</p>`
+                    );
+                }
+            });
+        }
+
+    } catch (err) {
+        console.error('Error fetching map data:', err);
+    }
+}
 

@@ -14,6 +14,25 @@
 
     <title>Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy</title>
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.mobilnyit.pl/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.mobilnyit.pl/">
+    <meta property="og:title" content="Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy">
+    <meta property="og:description"
+        content="Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Naprawa laptopów, PC, pogotowie komputerowe, części i akcesoria. Dojazd do klienta.">
+    <meta property="og:image" content="https://www.mobilnyit.pl/images/okrlogo.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.mobilnyit.pl/">
+    <meta property="twitter:title" content="Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy">
+    <meta property="twitter:description"
+        content="Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Naprawa laptopów, PC, pogotowie komputerowe, części i akcesoria. Dojazd do klienta.">
+    <meta property="twitter:image" content="https://www.mobilnyit.pl/images/okrlogo.png">
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -32,7 +51,7 @@
         "latitude": "50.866077",
         "longitude": "20.628568"
       },
-      "url": "https://mobilnyinformatyk.kielce.pl",
+      "url": "https://www.mobilnyit.pl",
       "telephone": "+48694297445",
       "priceRange": "$$"
     }
@@ -557,6 +576,14 @@
                                                                 <strong id="total-valuation" class="text-primary">0
                                                                     zł</strong>
                                                             </h6>
+                                                            <div class="text-center mt-3">
+                                                                <button type="button"
+                                                                    class="btn custom-btn custom-border-btn btn-sm"
+                                                                    id="download-pdf-btn" style="display: none;">
+                                                                    <i class="bi-file-earmark-pdf me-2"></i>Pobierz
+                                                                    wycenę (PDF)
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -899,6 +926,9 @@
                         <!-- EmailJS SDK -->
                         <script type="text/javascript"
                             src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+                        <!-- jsPDF Library -->
+                        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
                         <script type="text/javascript">
                             (function () {
                                 emailjs.init("YOUR_PUBLIC_KEY");

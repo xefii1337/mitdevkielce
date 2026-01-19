@@ -214,6 +214,10 @@
     </style>
     <!-- FullCalendar CSS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <!-- jsVectorMap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap/dist/css/jsvectormap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/js/jsvectormap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsvectormap/dist/maps/world.js"></script>
 </head>
 
 <body>
@@ -301,8 +305,54 @@
                             <div class="col-md-4">
                                 <div class="card shadow-sm stat-card h-100 border-0 bg-white">
                                     <div class="card-body text-center">
-                                        <h5 class="card-title text-muted mb-3">Użytkownicy</h5>
+                                        <h5 class="card-title text-muted mb-3">Zarejestrowani Użytkownicy</h5>
                                         <p class="display-4 fw-bold text-info mb-0" id="total-users-count">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Map Section -->
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card shadow-sm border-0">
+                                    <div class="card-body">
+                                        <h5 class="card-title mb-3 fw-bold">Mapa Logowań Użytkowników</h5>
+                                        <div id="world-map" style="height: 400px;"></div>
+
+                                        <!-- Regional Table (Poland) -->
+                                        <div class="accordion mt-4" id="regionAccordion">
+                                            <div class="accordion-item border-0">
+                                                <h2 class="accordion-header" id="headingRegion">
+                                                    <button
+                                                        class="accordion-button collapsed bg-light text-dark fw-bold"
+                                                        type="button" data-bs-toggle="collapse"
+                                                        data-bs-target="#collapseRegion" aria-expanded="false"
+                                                        aria-controls="collapseRegion">
+                                                        <i class="bi-table me-2"></i> Logowania wg Województw (Polska)
+                                                    </button>
+                                                </h2>
+                                                <div id="collapseRegion" class="accordion-collapse collapse"
+                                                    aria-labelledby="headingRegion" data-bs-parent="#regionAccordion">
+                                                    <div class="accordion-body p-0">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-hover mb-0">
+                                                                <thead class="table-light">
+                                                                    <tr>
+                                                                        <th>Województwo</th>
+                                                                        <th class="text-end">Liczba Logowań</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="region-table-body">
+                                                                    <!-- Rows will be populated by JS -->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -450,7 +500,7 @@
         </div>
     </div>
     <!-- Appointment Details Modal -->
-    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal" id="appointmentModal" tabindex="-1" aria-hidden="true" style="z-index: 10000;">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow">
                 <div class="modal-header border-bottom-0 pb-0">
@@ -458,46 +508,56 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pt-4">
-                    <div class="mb-3">
-                        <label class="text-muted small text-uppercase fw-bold mb-1">Klient</label>
-                        <div class="fs-5 fw-bold text-dark" id="modal-client-name"></div>
-                    </div>
-
-                    <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="text-muted small text-uppercase fw-bold mb-1">Data</label>
-                            <div class="text-dark" id="modal-date"></div>
+                    <form id="appointment-form">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Klient</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="modal-client-first-name"
+                                        placeholder="Imię">
+                                </div>
+                                <div class="col-6">
+                                    <input type="text" class="form-control" id="modal-client-last-name"
+                                        placeholder="Nazwisko">
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-6">
-                            <label class="text-muted small text-uppercase fw-bold mb-1">Godzina</label>
-                            <div class="text-dark" id="modal-time"></div>
+
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Termin</label>
+                            <div class="input-group">
+                                <input type="date" class="form-control" id="modal-date">
+                                <input type="time" class="form-control" id="modal-time">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label class="text-muted small text-uppercase fw-bold mb-1">Kontakt</label>
-                        <div><i class="bi-telephone me-2 text-warning"></i> <span id="modal-phone"></span></div>
-                        <div><i class="bi-geo-alt me-2 text-warning"></i> <span id="modal-address"></span></div>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Kontakt</label>
+                            <input type="text" class="form-control mb-2" id="modal-phone" placeholder="Telefon">
+                            <textarea class="form-control" id="modal-address" rows="2" placeholder="Adres"></textarea>
+                        </div>
 
-                    <div class="mb-4">
-                        <label class="text-muted small text-uppercase fw-bold mb-1">Opis Problemu</label>
-                        <div class="p-3 bg-light rounded border-0" id="modal-problem"></div>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Opis Problemu</label>
+                            <textarea class="form-control bg-light" id="modal-problem" rows="3"></textarea>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="modal-status" class="form-label fw-bold">Status Wizyty</label>
-                        <select class="form-select" id="modal-status">
-                            <option value="confirmed">Potwierdzona</option>
-                            <option value="completed">Zrealizowana</option>
-                            <option value="cancelled">Anulowana</option>
-                        </select>
-                    </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small text-uppercase fw-bold">Status</label>
+                            <select class="form-select" id="modal-status">
+                                <option value="confirmed">Potwierdzona</option>
+                                <option value="completed">Zakończona</option>
+                                <option value="cancelled">Anulowana</option>
+                            </select>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-outline-danger me-auto" id="delete-appointment-btn">
+                        <i class="bi-trash me-2"></i>Usuń
+                    </button>
                     <button type="button" class="btn btn-light" data-bs-dismiss="modal">Zamknij</button>
-                    <button type="button" class="btn btn-primary text-white" id="save-appointment-btn">Zapisz
-                        Zmiany</button>
+                    <button type="button" class="btn btn-primary px-4" id="save-appointment-btn">Zapisz Zmiany</button>
                 </div>
             </div>
         </div>

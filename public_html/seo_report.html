@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raport SEO i Pozycjonowania - MobilnyIT.pl</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .report-container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            color: #34495e;
+            margin-top: 30px;
+            font-size: 1.4rem;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .status-success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-warning {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .check-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .check-item:last-child {
+            border-bottom: none;
+        }
+
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #7f8c8d;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+            }
+
+            .report-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 0;
+            }
+
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="report-container">
+        <div class="text-end mb-4 no-print">
+            <button onclick="window.print()" class="btn btn-primary">🖨️ Drukuj do PDF</button>
+        </div>
+
+        <h1>Raport SEO i Pozycjonowania</h1>
+        <p><strong>Data raportu:</strong>
+            <script>document.write(new Date().toLocaleDateString())</script>
+        </p>
+        <p><strong>Domena:</strong> https://www.mobilnyit.pl</p>
+
+        <h2>1. Optymalizacja Techniczna</h2>
+        <div class="check-item">
+            <span>Mapa witryny (sitemap.xml)</span>
+            <span class="status-badge status-success">Utworzono</span>
+        </div>
+        <div class="check-item">
+            <span>Plik robots.txt</span>
+            <span class="status-badge status-success">Utworzono</span>
+        </div>
+        <div class="check-item">
+            <span>Tagi Kanoniczne (Canonical)</span>
+            <span class="status-badge status-success">Wdrożono</span>
+        </div>
+        <div class="check-item">
+            <span>Dane strukturalne (Schema.org)</span>
+            <span class="status-badge status-success">Wdrożono (ComputerStore)</span>
+        </div>
+
+        <h2>2. Meta Tagi i Słowa Kluczowe</h2>
+        <div class="check-item">
+            <span>Tytuł strony (Title)</span>
+            <span class="status-badge status-success">Zoptymalizowany</span>
+        </div>
+        <div class="check-item">
+            <span>Opis (Meta Description)</span>
+            <span class="status-badge status-success">Zoptymalizowany</span>
+        </div>
+        <div class="check-item">
+            <span>Słowa kluczowe</span>
+            <span class="status-badge status-success">Zdefiniowane</span>
+        </div>
+        <div class="check-item">
+            <span>Dynamiczne SEO (Strony Produktów)</span>
+            <span class="status-badge status-success">Zaimplementowano (JS)</span>
+        </div>
+
+        <h2>3. Social Media (SMO)</h2>
+        <div class="check-item">
+            <span>Open Graph (Facebook/Instagram)</span>
+            <span class="status-badge status-success">Wdrożono</span>
+        </div>
+        <div class="check-item">
+            <span>Twitter Cards</span>
+            <span class="status-badge status-success">Wdrożono</span>
+        </div>
+
+        <h2>4. Podsumowanie</h2>
+        <p class="mt-3">
+            Strona została w pełni zoptymalizowana pod kątem wyszukiwarek internetowych (SEO) oraz mediów
+            społecznościowych.
+            Wszystkie kluczowe elementy techniczne są na swoim miejscu, a domena została zaktualizowana do
+            <strong>mobilnyit.pl</strong>.
+        </p>
+
+        <div class="footer">
+            Wygenerowano automatycznie przez Mobilny Informatyk Kielce System
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -49,6 +49,42 @@ function renderProduct(product, images) {
     document.getElementById('product-desc').textContent = product.description || 'Brak opisu.';
     document.getElementById('product-location').textContent = product.location || 'Brak danych o lokalizacji';
 
+    // Dynamic SEO Updates
+    document.title = `${product.name} - Sklep Informatyczny Kielce`;
+
+    // Update Meta Description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.content = `Kup ${product.name} w Kielcach. Cena: ${product.price} PLN. ${product.description ? product.description.substring(0, 100) + '...' : ''}`;
+
+    // Update Open Graph
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.content = `${product.name} - Sklep Informatyczny Kielce`;
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.content = `Sprawdź ${product.name}. Cena: ${product.price} PLN. Dostępny w naszym sklepie w Kielcach.`;
+
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) ogUrl.content = window.location.href;
+
+    // Update Twitter
+    const twTitle = document.querySelector('meta[property="twitter:title"]');
+    if (twTitle) twTitle.content = `${product.name} - Sklep Informatyczny Kielce`;
+
+    const twDesc = document.querySelector('meta[property="twitter:description"]');
+    if (twDesc) twDesc.content = `Sprawdź ${product.name}. Cena: ${product.price} PLN. Dostępny w naszym sklepie w Kielcach.`;
+
+    const twUrl = document.querySelector('meta[property="twitter:url"]');
+    if (twUrl) twUrl.content = window.location.href;
+
+    // Update Images for Social Media (use first image)
+    const mainImage = (images && images.length > 0) ? images[0].image_url : (product.image_url || 'https://www.mobilnyit.pl/images/okrlogo.png');
+
+    const ogImage = document.querySelector('meta[property="og:image"]');
+    if (ogImage) ogImage.content = mainImage;
+
+    const twImage = document.querySelector('meta[property="twitter:image"]');
+    if (twImage) twImage.content = mainImage;
+
     // Gallery Logic
     const track = document.getElementById('carousel-track');
     const thumbsContainer = document.getElementById('gallery-thumbs');

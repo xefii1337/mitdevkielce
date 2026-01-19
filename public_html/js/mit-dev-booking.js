@@ -35,14 +35,17 @@ async function initBookingCalendar(retryCount = 0) {
     if (!calendarEl) return;
 
     // Fetch all future appointments once and cache them
+    // Fetch all future appointments using the secure RPC function
     try {
+        // We use rpc('get_busy_slots') instead of .select() on the table
+        // This prevents exposing personal data (names, phones) to the public.
         const { data: appointments, error } = await supabase
-            .from('appointments')
-            .select('appointment_date')
-            .gte('appointment_date', new Date().toISOString());
+            .rpc('get_busy_slots');
 
         if (!error && appointments) {
             appointmentsCache = appointments.map(a => new Date(a.appointment_date));
+        } else if (error) {
+            console.error('Error fetching slots:', error);
         }
     } catch (err) {
         console.error('Error fetching appointments:', err);

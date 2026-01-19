@@ -73,6 +73,9 @@ async function handleLogin(e) {
 
         if (error) throw error;
 
+        // Record login location (async, don't await)
+        recordLoginLocation(data.user.id);
+
         // Check role to decide redirect
         const { data: profile, error: profileError } = await supabase
             .from('profiles')
@@ -99,6 +102,26 @@ async function handleLogin(e) {
         messageDiv.innerHTML = `<strong>Błąd:</strong> ${msg}`;
         btn.disabled = false;
         btn.textContent = 'Zaloguj się';
+    }
+}
+
+async function recordLoginLocation(userId) {
+    try {
+        const response = await fetch('https://ipapi.co/json/');
+        if (!response.ok) return;
+        const locData = await response.json();
+
+        await supabase.from('login_history').insert([{
+            user_id: userId,
+            country_code: locData.country_code,
+            city: locData.city,
+            ip: locData.ip,
+            latitude: locData.latitude,
+            longitude: locData.longitude,
+            region: locData.region
+        }]);
+    } catch (err) {
+        console.error('Error recording login location:', err);
     }
 }
 
