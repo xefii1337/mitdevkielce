@@ -128,3 +128,88 @@ function calculateTotal() {
         }
     }
 }
+
+// Offer Submission Logic
+document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'send-offer-btn') {
+        const totalText = document.getElementById('total-valuation').textContent;
+        const modalPrice = document.getElementById('modal-offer-price');
+        if (modalPrice) modalPrice.textContent = totalText;
+
+        const modalEl = document.getElementById('offerModal');
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    }
+
+    if (e.target && e.target.id === 'confirm-offer-btn') {
+        submitOffer();
+    }
+});
+
+async function submitOffer() {
+    const contactInput = document.getElementById('offer-contact');
+    const contact = contactInput ? contactInput.value : '';
+
+    if (!contact) {
+        alert('Podaj kontakt!');
+        return;
+    }
+
+    const btn = document.getElementById('confirm-offer-btn');
+    const originalText = btn.textContent;
+    btn.textContent = 'Wysyłanie...';
+    btn.disabled = true;
+
+    // Gather components
+    const components = [];
+    const inputs = document.querySelectorAll('#section_valuation input');
+
+    // Helper to get price
+    const getPrice = (name) => {
+        if (!name) return 0;
+        const item = hardwareDatabase.find(i => i.name.toLowerCase() === name.toLowerCase());
+        return item ? item.marketPrice : 0;
+    };
+
+    inputs.forEach(input => {
+        if (input.value && input.type !== 'hidden' && input.id !== 'offer-contact') {
+            const price = getPrice(input.value);
+            if (price > 0) {
+                components.push({
+                    name: input.value,
+                    marketPrice: price
+                });
+            }
+        }
+    });
+
+    const marketPrice = components.reduce((sum, item) => sum + item.marketPrice, 0);
+    const clientPrice = marketPrice * PROFIT_MARGIN;
+
+    try {
+        const { supabase } = await import('./supabase-client.js');
+
+        const { error } = await supabase.from('valuations').insert([{
+            client_contact: contact,
+            components_json: components,
+            client_price: clientPrice,
+            market_price: marketPrice
+        }]);
+
+        if (error) throw error;
+
+        alert('Oferta wysłana! Skontaktujemy się z Tobą.');
+        const modalEl = document.getElementById('offerModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+
+    } catch (err) {
+        console.error('Error submitting offer:', err);
+        alert('Błąd wysyłania: ' + err.message);
+    } finally {
+        btn.textContent = originalText;
+        btn.disabled = false;
+    }
+}
