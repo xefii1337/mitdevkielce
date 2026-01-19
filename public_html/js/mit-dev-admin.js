@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchDashboardData();
         fetchUsers();
         fetchLoginMapData();
+        fetchValuations();
     }
 });
 
@@ -678,5 +679,98 @@ async function fetchLoginMapData() {
     } catch (err) {
         console.error('Error fetching map data:', err);
     }
+}
+
+// --- Valuations Management Logic ---
+
+async function fetchValuations() {
+    try {
+        const { data: valuations, error } = await supabase
+            .from('valuations')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        renderValuationsTable(valuations);
+    } catch (err) {
+        console.error('Error fetching valuations:', err);
+        const tbody = document.getElementById('valuations-table-body');
+        if (tbody) {
+            tbody.innerHTML = `
+                <tr><td colspan="8" class="text-center text-danger">Błąd: ${err.message}</td></tr>
+            `;
+        }
+    }
+}
+
+function renderValuationsTable(valuations) {
+    const tbody = document.getElementById('valuations-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (valuations.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center">Brak nadesłanych wycen.</td></tr>';
+        return;
+    }
+
+    valuations.forEach(val => {
+        const dateStr = new Date(val.created_at).toLocaleDateString('pl-PL') + ' ' + new Date(val.created_at).toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+
+        // Parse components JSON
+        let componentsList = '';
+        if (val.components_json && Array.isArray(val.components_json)) {
+            componentsList = val.components_json.map(c => `<small>${c.name}</small>`).join('<br>');
+        }
+
+        const profit = val.market_price - val.client_price;
+
+        let statusBadge = '';
+        if (val.status === 'pending') statusBadge = '<span class="badge bg-warning text-dark">Oczekuje</span>';
+        else if (val.status === 'accepted') statusBadge = '<span class="badge bg-success">Zaakceptowana</span>';
+        else if (val.status === 'rejected') statusBadge = '<span class="badge bg-danger">Odrzucona</span>';
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${dateStr}</td>
+            <td>${val.client_contact}</td>
+            <td>${componentsList}</td>
+            <td class="fw-bold">${parseFloat(val.client_price).toFixed(0)} zł</td>
+            <td class="text-muted">${parseFloat(val.market_price).toFixed(0)} zł</td>
+            <td class="text-success fw-bold">+${profit.toFixed(0)} zł</td>
+            <td>${statusBadge}</td>
+            <td>
+                <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-success status-btn" data-id="${val.id}" data-status="accepted" title="Zaakceptuj"><i class="bi-check-lg"></i></button>
+                    <button class="btn btn-outline-danger status-btn" data-id="${val.id}" data-status="rejected" title="Odrzuć"><i class="bi-x-lg"></i></button>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+
+    // Add listeners
+    document.querySelectorAll('.status-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const btnEl = e.target.closest('button');
+            const id = btnEl.dataset.id;
+            const status = btnEl.dataset.status;
+
+            if (!confirm(`Czy na pewno chcesz zmienić status na: ${status}?`)) return;
+
+            try {
+                const { error } = await supabase
+                    .from('valuations')
+                    .update({ status: status })
+                    .eq('id', id);
+
+                if (error) throw error;
+                fetchValuations(); // Refresh
+            } catch (err) {
+                alert('Błąd: ' + err.message);
+            }
+        });
+    });
 }
 

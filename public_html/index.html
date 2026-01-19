@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <meta name="description"
-        content="Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Naprawa laptopów, PC, pogotowie komputerowe, części i akcesoria. Dojazd do klienta.">
+        content="Szukasz informatyka w Kielcach? Oferujemy profesjonalny serwis komputerowy z dojazdem do klienta. Naprawa laptopów i PC. Zadzwoń: 694 297 445.">
     <meta name="keywords"
-        content="sklep internetowy informatyczny, informatyk kielce, kielce informatyk, sklep informatyczny, serwis informatyczny, serwis laptopów, serwis, serwis PC, naprawa komputerów kielce, pogotowie komputerowe, części komputerowe, modernizacja komputerów">
+        content="informatyk kielce, serwis komputerowy kielce, naprawa laptopów kielce, pogotowie komputerowe kielce, dojazd do klienta, mobilny informatyk, serwis pc, części komputerowe">
     <meta name="author" content="Mobilny Informatyk Kielce">
     <link rel="icon" type="text/css" href="images/icon.png">
 
-    <title>Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy</title>
+    <title>Mobilny Informatyk Kielce | Serwis z Dojazdem | Tel: 694 297 445</title>
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://www.mobilnyit.pl/" />
@@ -20,17 +20,17 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.mobilnyit.pl/">
-    <meta property="og:title" content="Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy">
+    <meta property="og:title" content="Mobilny Informatyk Kielce | Serwis z Dojazdem | Tel: 694 297 445">
     <meta property="og:description"
-        content="Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Naprawa laptopów, PC, pogotowie komputerowe, części i akcesoria. Dojazd do klienta.">
+        content="Szukasz informatyka w Kielcach? Oferujemy profesjonalny serwis komputerowy z dojazdem do klienta. Naprawa laptopów i PC. Zadzwoń: 694 297 445.">
     <meta property="og:image" content="https://www.mobilnyit.pl/images/okrlogo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.mobilnyit.pl/">
-    <meta property="twitter:title" content="Mobilny Informatyk Kielce - Serwis i Sklep Komputerowy">
+    <meta property="twitter:title" content="Mobilny Informatyk Kielce | Serwis z Dojazdem | Tel: 694 297 445">
     <meta property="twitter:description"
-        content="Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Naprawa laptopów, PC, pogotowie komputerowe, części i akcesoria. Dojazd do klienta.">
+        content="Szukasz informatyka w Kielcach? Oferujemy profesjonalny serwis komputerowy z dojazdem do klienta. Naprawa laptopów i PC. Zadzwoń: 694 297 445.">
     <meta property="twitter:image" content="https://www.mobilnyit.pl/images/okrlogo.png">
 
     <script type="application/ld+json">
@@ -38,8 +38,8 @@
       "@context": "https://schema.org",
       "@type": "ComputerStore",
       "name": "Mobilny Informatyk Kielce",
-      "image": "images/okrlogo.png",
-      "description": "Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Oferujemy naprawę laptopów, komputerów PC oraz sprzedaż części i akcesoriów.",
+      "image": "https://www.mobilnyit.pl/images/okrlogo.png",
+      "description": "Profesjonalny serwis komputerowy i sklep informatyczny w Kielcach. Oferujemy naprawę laptopów, komputerów PC oraz sprzedaż części i akcesoriów z dojazdem do klienta.",
       "address": {
         "@type": "PostalAddress",
         "addressLocality": "Kielce",
@@ -53,7 +53,45 @@
       },
       "url": "https://www.mobilnyit.pl",
       "telephone": "+48694297445",
-      "priceRange": "$$"
+      "priceRange": "$$",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "opens": "08:00",
+          "closes": "18:00"
+        }
+      ],
+      "areaServed": {
+        "@type": "City",
+        "name": "Kielce"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Usługi Informatyczne",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Naprawa Laptopów"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Dojazd do Klienta"
+            }
+          }
+        ]
+      }
     }
     </script>
 
@@ -527,40 +565,42 @@
                                             <div class="custom-form booking-form">
                                                 <div class="row">
                                                     <div class="col-lg-12 col-12">
-                                                        <label for="gpu-select" class="form-label">Karta
+                                                        <label for="gpu-input" class="form-label">Karta
                                                             Graficzna</label>
-                                                        <select class="form-control" id="gpu-select">
-                                                            <option value="">Wybierz kartę graficzną</option>
-                                                        </select>
+                                                        <input class="form-control" list="gpu-list" id="gpu-input"
+                                                            placeholder="Wpisz model (np. RTX 3060)">
+                                                        <datalist id="gpu-list"></datalist>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12">
-                                                        <label for="cpu-select" class="form-label">Procesor</label>
-                                                        <select class="form-control" id="cpu-select">
-                                                            <option value="">Wybierz procesor</option>
-                                                        </select>
+                                                        <label for="cpu-input" class="form-label">Procesor</label>
+                                                        <input class="form-control" list="cpu-list" id="cpu-input"
+                                                            placeholder="Wpisz model (np. Ryzen 5 5600)">
+                                                        <datalist id="cpu-list"></datalist>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12">
-                                                        <label for="mobo-select" class="form-label">Płyta Główna</label>
-                                                        <select class="form-control" id="mobo-select">
-                                                            <option value="">Wybierz płytę główną</option>
-                                                        </select>
+                                                        <label for="mobo-input" class="form-label">Płyta Główna</label>
+                                                        <input class="form-control" list="mobo-list" id="mobo-input"
+                                                            placeholder="Wpisz model (np. B550)">
+                                                        <datalist id="mobo-list"></datalist>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12">
-                                                        <label for="ram-select" class="form-label">Pamięć RAM</label>
-                                                        <select class="form-control" id="ram-select">
-                                                            <option value="">Wybierz pamięć RAM</option>
-                                                        </select>
+                                                        <label for="ram-input" class="form-label">Pamięć RAM</label>
+                                                        <input class="form-control" list="ram-list" id="ram-input"
+                                                            placeholder="Wpisz model (np. DDR4 16GB)">
+                                                        <datalist id="ram-list"></datalist>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12">
                                                         <label class="form-label">Dyski</label>
                                                         <div id="disks-container">
                                                             <div class="disk-entry mb-3">
-                                                                <select class="form-control disk-select">
-                                                                    <option value="">Wybierz dysk</option>
+                                                                <input class="form-control disk-input" list="disk-list"
+                                                                    placeholder="Wpisz model (np. SSD 1TB)">
+                                                                <datalist id="disk-list"></datalist>
+                                                                <option value="">Wybierz dysk</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -576,12 +616,16 @@
                                                                 <strong id="total-valuation" class="text-primary">0
                                                                     zł</strong>
                                                             </h6>
-                                                            <div class="text-center mt-3">
+                                                            <div
+                                                                class="text-center mt-3 d-flex justify-content-center gap-2">
                                                                 <button type="button"
                                                                     class="btn custom-btn custom-border-btn btn-sm"
                                                                     id="download-pdf-btn" style="display: none;">
-                                                                    <i class="bi-file-earmark-pdf me-2"></i>Pobierz
-                                                                    wycenę (PDF)
+                                                                    <i class="bi-file-earmark-pdf me-2"></i>PDF
+                                                                </button>
+                                                                <button type="button" class="btn btn-success btn-sm"
+                                                                    id="send-offer-btn" style="display: none;">
+                                                                    <i class="bi-send me-2"></i>Wyślij Ofertę
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -592,6 +636,38 @@
                                     </div>
                                 </div>
                             </section>
+
+                            <!-- Offer Modal -->
+                            <div class="modal fade" id="offerModal" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Wyślij Ofertę Sprzedaży</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Jesteśmy zainteresowani kupnem Twojego sprzętu za kwotę: <strong
+                                                    id="modal-offer-price" class="text-success"></strong></p>
+                                            <p class="text-muted small">Zostaw kontakt, odezwiemy się w ciągu 24h.</p>
+                                            <form id="offer-form">
+                                                <div class="mb-3">
+                                                    <label for="offer-contact" class="form-label">Email lub
+                                                        Telefon</label>
+                                                    <input type="text" class="form-control" id="offer-contact" required
+                                                        placeholder="np. 500 123 456">
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Anuluj</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="confirm-offer-btn">Wyślij</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                             <section class="booking-section section-padding" id="section_booking">
                                 <div class="container">
