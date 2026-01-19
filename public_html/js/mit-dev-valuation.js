@@ -112,16 +112,19 @@ function calculateTotal() {
 
     // Update UI
     const totalElement = document.getElementById('total-valuation');
+    const sendBtn = document.getElementById('send-offer-btn');
+
     if (totalElement) {
         if (totalMarketValue > 0) {
             totalElement.textContent = `${offerPrice.toFixed(0)} zł`;
             totalElement.style.color = '#28a745'; // Green
 
-            // Optional: Show market value comparison in console or a tooltip
-            // console.log(`Market Value: ${totalMarketValue}, Offer: ${offerPrice}`);
+            if (sendBtn) sendBtn.style.display = 'inline-block';
         } else {
             totalElement.textContent = '0.00 zł';
             totalElement.style.color = 'inherit';
+
+            if (sendBtn) sendBtn.style.display = 'none';
         }
     }
 }
