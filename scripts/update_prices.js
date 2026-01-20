@@ -54,9 +54,12 @@ async function fetchPriceFromOLX(query) {
 
         // Calculate average
         const sum = validPrices.reduce((a, b) => a + b, 0);
-        const avg = Math.round(sum / validPrices.length);
+        let avg = Math.round(sum / validPrices.length);
 
-        console.log(`  Found ${prices.length} prices. Avg: ${avg} zł`);
+        // Apply 15% reduction (conservative estimate for used items)
+        avg = Math.round(avg * 0.85);
+
+        console.log(`  Found ${prices.length} prices. Avg (adjusted -15%): ${avg} zł`);
         return avg;
 
     } catch (err) {
