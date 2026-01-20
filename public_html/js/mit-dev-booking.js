@@ -343,11 +343,38 @@ async function confirmBooking() {
                 const emailParams = {
                     to_email: 'mobilnypomocnik@gmail.com',
                     from_name: `${bookingData.first_name} ${bookingData.last_name}`,
-                    message: `Nowa rezerwacja:
-                    Data: ${new Date(bookingData.appointment_date).toLocaleString('pl-PL')}
-                    Telefon: ${bookingData.phone}
-                    Adres: ${bookingData.address}
-                    Problem: ${bookingData.problem_desc}`,
+                    subject: `Nowa Rezerwacja: ${bookingData.first_name} ${bookingData.last_name}`,
+                    html_body: `
+                        <div style="font-family: Arial, sans-serif; color: #333;">
+                            <h2 style="color: #0d6efd;">📅 Nowa Rezerwacja Wizyty</h2>
+                            <p>Otrzymałeś nowe zgłoszenie rezerwacji ze strony.</p>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; width: 30%;"><strong>Data i godzina:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${new Date(bookingData.appointment_date).toLocaleString('pl-PL')}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Klient:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${bookingData.first_name} ${bookingData.last_name}</td>
+                                </tr>
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Telefon:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><a href="tel:${bookingData.phone}">${bookingData.phone}</a></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Adres:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${bookingData.address}</td>
+                                </tr>
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Opis problemu:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${bookingData.problem_desc}</td>
+                                </tr>
+                            </table>
+                            
+                            <p style="margin-top: 20px; font-size: 12px; color: #888;">Wiadomość wygenerowana automatycznie przez system MIT-DEV.</p>
+                        </div>
+                    `,
                     reply_to: 'no-reply@example.com'
                 };
 
