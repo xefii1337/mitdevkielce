@@ -208,14 +208,40 @@ async function submitOffer() {
                 const emailParams = {
                     to_email: 'mobilnypomocnik@gmail.com',
                     from_name: contact, // Client contact info
-                    message: `Nowa wycena PC!
-                    
-                    Kontakt: ${contact}
-                    Wycena klienta: ${clientPrice.toFixed(2)} zł
-                    Wartość rynkowa: ${marketPrice.toFixed(2)} zł
-                    
-                    Podzespoły:
-                    ${components.map(c => `- ${c.name} (${c.marketPrice} zł)`).join('\n')}`,
+                    subject: `Nowa Wycena PC: ${contact}`,
+                    html_body: `
+                        <div style="font-family: Arial, sans-serif; color: #333;">
+                            <h2 style="color: #198754;">💻 Nowa Wycena Sprzętu</h2>
+                            <p>Klient przesłał nową konfigurację do wyceny.</p>
+                            
+                            <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="padding: 10px; border: 1px solid #ddd; width: 30%;"><strong>Kontakt:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${contact}</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Oferta Klienta:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-size: 18px; color: #198754;"><strong>${clientPrice.toFixed(2)} zł</strong></td>
+                                </tr>
+                                <tr style="background-color: #f8f9fa;">
+                                    <td style="padding: 10px; border: 1px solid #ddd;"><strong>Wartość Rynkowa:</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${marketPrice.toFixed(2)} zł</td>
+                                </tr>
+                            </table>
+
+                            <h3 style="margin-top: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Lista Podzespołów</h3>
+                            <ul style="list-style-type: none; padding: 0;">
+                                ${components.map(c => `
+                                    <li style="padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
+                                        <span>${c.name}</span>
+                                        <span style="color: #666;">${c.marketPrice} zł</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                            
+                            <p style="margin-top: 20px; font-size: 12px; color: #888;">Wiadomość wygenerowana automatycznie przez system MIT-DEV.</p>
+                        </div>
+                    `,
                     reply_to: contact
                 };
 

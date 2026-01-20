@@ -368,7 +368,6 @@ async function confirmBooking() {
             }
         } catch (emailError) {
             console.error('Failed to send email:', emailError);
-            // Do NOT alert user, as booking was successful
         }
 
         // Note: location.reload() is now handled by the modal close event
