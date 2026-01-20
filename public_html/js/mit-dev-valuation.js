@@ -200,6 +200,35 @@ async function submitOffer() {
 
         if (error) throw error;
 
+        if (error) throw error;
+
+        // Send Email Notification to Admin
+        try {
+            if (typeof emailjs !== 'undefined') {
+                const emailParams = {
+                    to_email: 'mobilnypomocnik@gmail.com',
+                    from_name: contact, // Client contact info
+                    message: `Nowa wycena PC!
+                    
+                    Kontakt: ${contact}
+                    Wycena klienta: ${clientPrice.toFixed(2)} zł
+                    Wartość rynkowa: ${marketPrice.toFixed(2)} zł
+                    
+                    Podzespoły:
+                    ${components.map(c => `- ${c.name} (${c.marketPrice} zł)`).join('\n')}`,
+                    reply_to: contact
+                };
+
+                const serviceID = 'service_h7bo6jd'; // WPISZ TU SWÓJ SERVICE ID
+                const templateID = 'template_0xh6hqw';
+
+                await emailjs.send(serviceID, templateID, emailParams);
+                console.log('Valuation email sent');
+            }
+        } catch (emailError) {
+            console.error('Failed to send valuation email:', emailError);
+        }
+
         alert('Oferta wysłana! Skontaktujemy się z Tobą.');
         const modalEl = document.getElementById('offerModal');
         const modal = bootstrap.Modal.getInstance(modalEl);

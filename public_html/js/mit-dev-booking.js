@@ -354,7 +354,14 @@ async function confirmBooking() {
                 // We don't await this to keep UI snappy, or we await with catch
                 // Since we reload page, we should probably await it briefly or just fire and forget if we didn't reload.
                 // But we DO reload. So we must await, otherwise reload kills the request.
-                await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', emailParams);
+
+                // SERVICE ID: User provided "Powiadomienie MIT-DEV" which is likely a name. 
+                // Please replace 'service_ID_HERE' with the actual ID starting with 'service_' if this doesn't work.
+                // Common default is often just the service ID you see in the URL or settings.
+                const serviceID = 'service_h7bo6jd'; // WPISZ TU SWÓJ SERVICE ID (np. service_x93sk2a)
+                const templateID = 'template_0xh6hqw';
+
+                await emailjs.send(serviceID, templateID, emailParams);
                 console.log('Email sent successfully');
             } else {
                 console.warn('EmailJS not loaded');
