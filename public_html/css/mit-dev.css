@@ -372,7 +372,9 @@ strong {
   HERO        
 -----------------------------------------*/
 .hero-section {
-  background-image: url('../images/mit.jpg');
+  /* background-image: url('../images/mit.jpg'); REMOVED as per request */
+  background-color: var(--dark-color);
+  /* Fallback color */
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
@@ -474,7 +476,8 @@ strong {
   FEATURED               
 -----------------------------------------*/
 .featured-section {
-  background-image: url('../images/mit.jpg');
+  /* background-image: url('../images/mit.jpg'); REMOVED as per request */
+  background-color: var(--dark-color);
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
