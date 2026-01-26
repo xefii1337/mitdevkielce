@@ -1024,17 +1024,17 @@ strong {
     margin: 0 !important;
   }
 
-  /* Fix Hero Background on Mobile - REMOVE BACKGROUNDS */
+  /* Fix Hero Background on Mobile - USE GRADIENT */
   .hero-section {
     background-image: none !important;
-    background-color: #222 !important;
-    /* Dark background so white text is readable */
+    background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%) !important;
+    /* Bright gradient */
     background-attachment: scroll;
     padding: 20px 0;
     /* Adjust padding */
   }
 
-  /* Remove gradient overlay on mobile */
+  /* Remove gradient overlay on mobile (since we use it as main bg) */
   .hero-section::after {
     display: none !important;
   }
