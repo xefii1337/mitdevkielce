@@ -1,6 +1,6 @@
 
-// Use CDN import for static hosting (no bundler)
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+// Use CDN import for static hosting (esm.sh is reliable for modules)
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
 // Hardcoded keys for static deployment
 const supabaseUrl = 'https://gdrlmmaoeafsghklmeqx.supabase.co'
