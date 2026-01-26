@@ -1,12 +1,13 @@
-import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+// Use CDN import for static hosting (no bundler)
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+
+// Hardcoded keys for static deployment
+const supabaseUrl = 'https://gdrlmmaoeafsghklmeqx.supabase.co'
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkcmxtbWFvZWFmc2doa2xtZXF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUyOTQxNzIsImV4cCI6MjA4MDg3MDE3Mn0.FnWuDwnNViqPRmC7sLnjkimXbhgZQjTPEdLs5zVhSuM'
 
 if (!supabaseUrl || !supabaseAnonKey) {
-    console.error('Supabase keys are missing! Check your .env file and vite.config.js');
+    console.error('Supabase keys are missing!');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-console.log('Supabase client initialized:', supabase)
