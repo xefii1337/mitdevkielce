@@ -399,6 +399,31 @@ strong {
   border-bottom: 15px solid var(--primary-color);
 }
 
+/* Hero Button Overrides for better visibility */
+.hero-section .custom-btn.custom-border-btn {
+  border-color: var(--white-color) !important;
+  color: var(--white-color) !important;
+  background: transparent !important;
+}
+
+.hero-section .custom-btn.custom-border-btn:hover {
+  background: var(--white-color) !important;
+  color: var(--primary-color) !important;
+}
+
+.hero-section .custom-btn:not(.custom-border-btn):not(.custom-btn-italic) {
+  background: var(--white-color) !important;
+  color: var(--primary-color) !important;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.hero-section .custom-btn:not(.custom-border-btn):not(.custom-btn-italic):hover {
+  background: var(--secondary-color) !important;
+  color: var(--white-color) !important;
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
 @media screen and (min-width: 991px) {
   .hero-section {
     height: calc(100vh - 0px);
