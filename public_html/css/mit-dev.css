@@ -55,7 +55,13 @@
   --font-weight-thin: 200;
   --font-weight-light: 300;
   --font-weight-normal: 400;
+  --font-weight-normal: 400;
   --font-weight-bold: 700;
+
+  /* Modern UI Variables */
+  --shadow-soft: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 20px 50px -10px rgba(0, 0, 0, 0.15);
+  --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 /* Fix overlapping popups z-index globally */
@@ -109,12 +115,14 @@ h5 {
 
 h6 {
   font-size: var(--h6-font-size);
+  line-height: 1.8;
 }
 
 p {
   color: var(--p-color);
   font-size: var(--p-font-size);
   font-weight: var(--font-weight-light);
+  line-height: 1.8;
 }
 
 ul li {
@@ -221,12 +229,16 @@ strong {
   font-weight: var(--font-weight-bold);
   line-height: normal;
   transition: all 0.3s;
-  padding: 10px 20px;
+  padding: 12px 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.5px;
 }
 
 .custom-btn:hover {
   background: var(--custom-btn-bg-hover-color);
   color: var(--white-color);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(193, 40, 40, 0.4);
 }
 
 .custom-border-btn {
@@ -412,6 +424,7 @@ strong {
 .custom-block {
   border: 10px solid var(--primary-color);
   border-radius: 100%;
+  box-shadow: var(--shadow-soft);
   position: absolute;
   z-index: 2;
   bottom: -60px;
@@ -519,7 +532,10 @@ strong {
 
 .services-thumb:hover .services-info {
   border-color: var(--primary-color);
-  border-width: 5px;
+  border-width: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  box-shadow: var(--shadow-hover);
 }
 
 .services-thumb:hover .services-image {
@@ -543,7 +559,9 @@ strong {
 
 .services-info {
   border-radius: var(--border-radius-medium);
-  border: 1px solid var(--white-color);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow-soft);
   position: absolute;
   top: 0;
   bottom: 0;
@@ -607,7 +625,7 @@ strong {
   background: var(--white-color);
   border-radius: var(--border-radius-medium);
   padding: 50px;
-  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+  box-shadow: var(--shadow-soft);
 }
 
 .booking-form .form-label {
@@ -690,8 +708,9 @@ strong {
 
 .custom-form .form-control:hover,
 .custom-form .form-control:focus {
-  background: var(--section-bg-color);
-  border-color: transparent;
+  background: var(--white-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.1);
 }
 
 .custom-form button[type="submit"] {
