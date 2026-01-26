@@ -556,8 +556,8 @@ strong {
 }
 
 .services-thumb:hover .services-info {
-  background: rgba(255, 255, 255, 0.2);
-  border-top-color: var(--white-color);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .services-thumb:hover .services-image {
@@ -569,6 +569,7 @@ strong {
   display: block;
   margin: auto;
   transition: all 0.3s;
+  width: 100%;
 }
 
 .services-thumb-price {
@@ -592,7 +593,9 @@ strong {
   left: 0;
   margin: 0;
   padding: 20px;
-  transition: all 0.3s ease;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .services-info h4 {
