@@ -556,11 +556,8 @@ strong {
 }
 
 .services-thumb:hover .services-info {
-  border-color: var(--primary-color);
-  border-width: 0;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(5px);
-  box-shadow: var(--shadow-hover);
+  background: rgba(255, 255, 255, 0.2);
+  border-top-color: var(--white-color);
 }
 
 .services-thumb:hover .services-image {
@@ -583,17 +580,18 @@ strong {
 }
 
 .services-info {
-  border-radius: var(--border-radius-medium);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0 0 var(--border-radius-medium) var(--border-radius-medium);
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   box-shadow: var(--shadow-soft);
   position: absolute;
-  top: 0;
+  top: auto;
   bottom: 0;
   right: 0;
   left: 0;
-  margin: 20px;
-  padding: 25px 30px;
+  margin: 0;
+  padding: 20px;
   transition: all 0.3s ease;
 }
 
