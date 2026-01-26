@@ -178,6 +178,9 @@ function openAppointmentModal(event) {
 
     const deleteBtn = document.getElementById('delete-appointment-btn');
     deleteBtn.dataset.eventId = currentEventId;
+    // Reset button state
+    deleteBtn.innerHTML = '<i class="bi-trash me-2"></i>Usuń';
+    deleteBtn.disabled = false;
 
     const modalEl = document.getElementById('appointmentModal');
     if (modalEl) {
@@ -186,7 +189,7 @@ function openAppointmentModal(event) {
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
     } else {
-        alert('Błąd: Nie znaleziono okna wizyty. Odśwież stronę.');
+        Swal.fire('Błąd', 'Nie znaleziono okna wizyty. Odśwież stronę.', 'error');
     }
 }
 
@@ -239,11 +242,22 @@ document.addEventListener('click', async (e) => {
             // Refresh dashboard/calendar
             fetchDashboardData();
 
-            alert('Wizyta została zaktualizowana.');
+            Swal.fire({
+                title: 'Zaktualizowano!',
+                text: 'Wizyta została pomyślnie zaktualizowana.',
+                icon: 'success',
+                confirmButtonColor: '#ffc107',
+                confirmButtonText: 'OK'
+            });
 
         } catch (err) {
             console.error('Error updating appointment:', err);
-            alert('Błąd aktualizacji: ' + err.message);
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Błąd aktualizacji: ' + err.message,
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
         } finally {
             btn.textContent = originalText;
             btn.disabled = false;
@@ -259,7 +273,22 @@ document.addEventListener('click', async (e) => {
         const eventId = btn.dataset.eventId;
         if (!eventId) return;
 
-        if (!confirm('Czy na pewno chcesz trwale usunąć tę wizytę?')) return;
+        // Use SweetAlert2 for confirmation
+        const result = await Swal.fire({
+            title: 'Czy na pewno?',
+            text: "Tej operacji nie można cofnąć!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#adb5bd',
+            confirmButtonText: 'Tak, usuń',
+            cancelButtonText: 'Anuluj',
+            customClass: {
+                popup: 'mit-swal-popup'
+            }
+        });
+
+        if (!result.isConfirmed) return;
 
         const originalText = btn.innerHTML;
         btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
@@ -281,11 +310,26 @@ document.addEventListener('click', async (e) => {
             // Refresh dashboard/calendar
             fetchDashboardData();
 
-            alert('Wizyta została usunięta.');
+            Swal.fire({
+                title: 'Usunięto!',
+                text: 'Wizyta została pomyślnie usunięta.',
+                icon: 'success',
+                confirmButtonColor: '#ffc107',
+                confirmButtonText: 'OK'
+            });
+
+            // Reset button state
+            btn.innerHTML = originalText;
+            btn.disabled = false;
 
         } catch (err) {
             console.error('Error deleting appointment:', err);
-            alert('Błąd usuwania: ' + err.message);
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Nie udało się usunąć wizyty: ' + err.message,
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
             btn.innerHTML = originalText;
             btn.disabled = false;
         }
@@ -369,7 +413,15 @@ async function handleRoleUpdate(e) {
 
         if (error) throw error;
 
-        alert('Rola została zaktualizowana.');
+        Swal.fire({
+            title: 'Zaktualizowano!',
+            text: 'Rola użytkownika została zmieniona.',
+            icon: 'success',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
         btn.textContent = 'Zapisano';
         setTimeout(() => {
             btn.textContent = originalText;
@@ -378,7 +430,12 @@ async function handleRoleUpdate(e) {
 
     } catch (err) {
         console.error('Error updating role:', err);
-        alert('Błąd aktualizacji roli: ' + err.message);
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Błąd aktualizacji roli: ' + err.message,
+            icon: 'error',
+            confirmButtonColor: '#dc3545'
+        });
         btn.textContent = originalText;
         btn.disabled = false;
     }
@@ -433,8 +490,19 @@ function renderProductsTable(products) {
 
     // Add delete listeners
     document.querySelectorAll('.delete-product-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            if (confirm('Czy na pewno chcesz usunąć ten produkt?')) {
+        btn.addEventListener('click', async (e) => {
+            const result = await Swal.fire({
+                title: 'Usuń produkt?',
+                text: "Tej operacji nie można cofnąć!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc3545',
+                cancelButtonColor: '#adb5bd',
+                confirmButtonText: 'Tak, usuń',
+                cancelButtonText: 'Anuluj'
+            });
+
+            if (result.isConfirmed) {
                 deleteProduct(btn.dataset.id);
             }
         });
@@ -461,7 +529,7 @@ document.getElementById('product-image').addEventListener('change', function () 
     const newFiles = Array.from(this.files);
 
     if (selectedFiles.length + newFiles.length > 10) {
-        alert('Możesz dodać maksymalnie 10 zdjęć.');
+        Swal.fire('Uwaga', 'Możesz dodać maksymalnie 10 zdjęć.', 'warning');
         return;
     }
 
@@ -586,11 +654,22 @@ document.getElementById('save-product-btn').addEventListener('click', async () =
         modal.hide();
 
         fetchProducts();
-        alert('Produkt dodany pomyślnie!');
+        Swal.fire({
+            title: 'Sukces!',
+            text: 'Produkt dodany pomyślnie!',
+            icon: 'success',
+            confirmButtonColor: '#ffc107',
+            confirmButtonText: 'OK'
+        });
 
     } catch (err) {
         console.error('Error saving product:', err);
-        alert('Błąd zapisu: ' + err.message);
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Błąd zapisu: ' + err.message,
+            icon: 'error',
+            confirmButtonColor: '#dc3545'
+        });
     } finally {
         btn.textContent = originalText;
         btn.disabled = false;
@@ -609,7 +688,7 @@ async function deleteProduct(id) {
 
     } catch (err) {
         console.error('Error deleting product:', err);
-        alert('Błąd usuwania: ' + err.message);
+        Swal.fire('Błąd', 'Błąd usuwania: ' + err.message, 'error');
     }
 }
 
@@ -758,7 +837,18 @@ function renderValuationsTable(valuations) {
             const id = btnEl.dataset.id;
             const status = btnEl.dataset.status;
 
-            if (!confirm(`Czy na pewno chcesz zmienić status na: ${status}?`)) return;
+            const result = await Swal.fire({
+                title: 'Zmienić status?',
+                text: `Czy ustawić status na: ${status === 'accepted' ? 'Zaakceptowana' : 'Odrzucona'}?`,
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: status === 'accepted' ? '#198754' : '#dc3545',
+                cancelButtonColor: '#adb5bd',
+                confirmButtonText: 'Tak, zmień',
+                cancelButtonText: 'Anuluj'
+            });
+
+            if (!result.isConfirmed) return;
 
             try {
                 const { error } = await supabase
@@ -768,8 +858,17 @@ function renderValuationsTable(valuations) {
 
                 if (error) throw error;
                 fetchValuations(); // Refresh
+                Swal.fire({
+                    title: 'Gotowe!',
+                    text: 'Status został zmieniony.',
+                    icon: 'success',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             } catch (err) {
-                alert('Błąd: ' + err.message);
+                Swal.fire('Błąd', err.message, 'error');
             }
         });
     });
@@ -815,7 +914,7 @@ function openValuationEditModal(valuation) {
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
     } else {
-        alert('Błąd: Nie znaleziono modala edycji.');
+        Swal.fire('Błąd', 'Nie znaleziono modala edycji.', 'error');
     }
 }
 
@@ -837,15 +936,27 @@ document.addEventListener('click', async (e) => {
 
             if (error) throw error;
 
-            alert('Zaktualizowano wycenę!');
             const modalEl = document.getElementById('valuationEditModal');
             const modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
             fetchValuations(); // Refresh table
 
+            Swal.fire({
+                title: 'Sukces!',
+                text: 'Zaktualizowano wycenę!',
+                icon: 'success',
+                confirmButtonColor: '#ffc107',
+                confirmButtonText: 'OK'
+            });
+
         } catch (err) {
             console.error('Error updating valuation:', err);
-            alert('Błąd zapisu: ' + err.message);
+            Swal.fire({
+                title: 'Błąd!',
+                text: 'Błąd zapisu: ' + err.message,
+                icon: 'error',
+                confirmButtonColor: '#dc3545'
+            });
         }
     }
 });

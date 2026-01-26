@@ -23,7 +23,14 @@
             background-color: #f5f6fa;
         }
 
+
         /* Sidebar Styles - Decoupled from #sidebarMenu in mit-dev.css */
+
+        /* Fix overlapping popups z-index */
+        .swal2-container {
+            z-index: 100000 !important;
+        }
+
         .admin-sidebar {
             position: fixed;
             top: 0;
@@ -642,6 +649,7 @@
     <!-- Tippy.js for tooltips -->
     <script src="https://unpkg.com/@popperjs/core@2"></script>
     <script src="https://unpkg.com/tippy.js@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="js/supabase-client.js"></script>
     <script type="module" src="js/mit-dev-auth.js"></script>
     <script type="module" src="js/mit-dev-admin.js"></script>

@@ -2,7 +2,7 @@
 UPDATE profiles
 SET role = 'admin'
 WHERE id = (
-  SELECT id FROM auth.users WHERE email = 'twoj@email.com'
+  SELECT id FROM auth.users WHERE email = 'mobilnypomocnik@gmail.com'
 );
 
 -- If the profile doesn't exist, insert it (safety net)

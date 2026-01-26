@@ -58,6 +58,11 @@
   --font-weight-bold: 700;
 }
 
+/* Fix overlapping popups z-index globally */
+.swal2-container {
+  z-index: 100000 !important;
+}
+
 body {
   background-color: var(--white-color);
   font-family: var(--body-font-family);
@@ -174,23 +179,28 @@ strong {
 /*---------------------------------------
   CUSTOM BLOCK BACKGROUND OVERLAY               
 -----------------------------------------*/
+.custom-block-bg-overlay-wrap:hover {
+  background: var(--primary-color);
+  transform: scale(1.05);
+}
+
 .custom-block-bg-overlay-wrap {
   background: var(--primary-color);
   border-radius: var(--border-radius-medium);
   transition: all 0.3s ease;
-}
-
-.custom-block-bg-overlay-wrap:hover {
-  background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%);
-  transform: scale(1.05);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  /* Add padding to look nice */
 }
 
 .custom-block-bg-overlay-image {
   border-radius: var(--border-radius-medium);
   display: block;
-  margin: auto;
-  height: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  height: auto;
+  /* Allow natural height */
   transform: rotate(8deg);
 }
 
@@ -480,8 +490,14 @@ strong {
   color: var(--white-color);
 }
 
+.featured-section .section-overlay {
+  background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%);
+  opacity: 0.85;
+}
+
 .featured-section strong {
-  background: var(--primary-color);
+  background: var(--white-color);
+  color: var(--primary-color);
   border-radius: var(--border-radius-medium);
   display: inline-block;
   margin-top: 10px;
@@ -877,4 +893,137 @@ strong {
 .fc-day.custom-selected-day .fc-daygrid-day-number {
   color: var(--dark-color) !important;
   font-weight: bold;
+}
+
+/*---------------------------------------
+  CUSTOM MODAL               
+-----------------------------------------*/
+.custom-modal .modal-content {
+  border-radius: 25px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.custom-modal .modal-header {
+  /* No background, clean look */
+  padding: 25px 30px 10px;
+}
+
+.custom-modal .modal-title {
+  color: var(--dark-color);
+  font-size: 1.5rem;
+}
+
+.custom-modal .modal-title i {
+  color: var(--primary-color);
+}
+
+.custom-modal .modal-body {
+  padding: 20px 30px;
+}
+
+.custom-modal .form-control {
+  border-radius: 12px;
+  padding: 15px;
+}
+
+.custom-modal .form-control:focus {
+  box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.15);
+  background-color: var(--white-color);
+}
+
+.custom-modal .modal-footer {
+  padding: 10px 30px 30px;
+}
+
+.custom-modal .btn {
+  border-radius: 50px;
+  font-weight: 600;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.custom-modal .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Discount Box Pulse Animation */
+@keyframes pulse-custom {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0.5rem 1.5rem rgba(255, 204, 0, 0.4);
+  }
+
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+}
+
+.discount-box {
+  animation: pulse-custom 2s infinite ease-in-out;
+  border-left: 5px solid var(--primary-color);
+  background-color: var(--white-color);
+  border-radius: var(--border-radius-small);
+}
+
+.discount-box i {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+/* Mobile Optimizations */
+@media screen and (max-width: 767px) {
+
+  /* Prevent iOS zoom on inputs */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="tel"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Responsive Images */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Discount Box Mobile Stack */
+  .discount-box {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px !important;
+  }
+
+  .discount-box .text-start {
+    text-align: center !important;
+  }
+
+  .discount-box i {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Fix Image Clipping */
+  .custom-block-bg-overlay-image,
+  .contact-block,
+  .custom-block-bg-overlay-wrap {
+    transform: none !important;
+    /* Remove rotation on mobile */
+    margin: 0 !important;
+  }
+
+  /* Fix Hero Background on Mobile */
+  .hero-section {
+    background-attachment: scroll;
+    background-position: top center;
+  }
 }

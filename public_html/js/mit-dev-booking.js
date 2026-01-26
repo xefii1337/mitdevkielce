@@ -71,7 +71,7 @@ async function initBookingCalendar(retryCount = 0) {
             handleDateClick(info.start, info.startStr);
         },
         validRange: {
-            start: new Date()
+            start: '2026-02-09'
         }
     });
 
@@ -120,14 +120,25 @@ async function initBookingCalendar(retryCount = 0) {
 }
 
 function suggestEarliestSlot() {
-    const now = new Date();
-    let searchDate = new Date(now);
+    const fixedStartDate = new Date('2026-02-09T08:00:00');
+    let searchDate = new Date(fixedStartDate);
 
-    // Search for next 14 days
-    for (let i = 0; i < 14; i++) {
-        // Reset to 8:00 if it's a new day, or next hour if today
+    // If current time is past fixed start date, use current time (but we want to enforce Feb 9 minimum)
+    const now = new Date();
+    if (searchDate < now) {
+        searchDate = new Date(now);
+    }
+
+    // Ensure we start at 8:00 of the search date
+    searchDate.setHours(8, 0, 0, 0);
+
+    // Search for next 30 days (increased range to find slot)
+    for (let i = 0; i < 30; i++) {
+        // Reset to 8:00 
         let startHour = 8;
-        if (i === 0) {
+
+        // If it's the very first day of search and it's today, ensure we don't suggest passed hours
+        if (i === 0 && searchDate.toDateString() === now.toDateString()) {
             startHour = Math.max(8, now.getHours() + 1);
         }
 
@@ -148,15 +159,19 @@ function suggestEarliestSlot() {
 
                 // Update UI
                 const displayEl = document.getElementById('suggested-date-display');
-                displayEl.textContent = slotDate.toLocaleString('pl-PL', {
-                    weekday: 'long',
-                    day: 'numeric',
-                    month: 'long',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+                if (displayEl) {
+                    displayEl.textContent = slotDate.toLocaleString('pl-PL', {
+                        weekday: 'long',
+                        day: 'numeric',
+                        month: 'long',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
 
-                document.getElementById('accept-suggestion-btn').disabled = false;
+                const acceptBtn = document.getElementById('accept-suggestion-btn');
+                if (acceptBtn) acceptBtn.disabled = false;
+
                 return;
             }
         }
@@ -333,8 +348,15 @@ async function confirmBooking() {
             // But let's be safe if they click outside
         } else {
             // Fallback if modal missing
-            alert('Wizyta została zarezerwowana! Dziękujemy.');
-            location.reload();
+            Swal.fire({
+                title: 'Sukces!',
+                text: 'Wizyta została zarezerwowana! Dziękujemy.',
+                icon: 'success',
+                confirmButtonColor: '#ffc107',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                location.reload();
+            });
         }
 
         // Send Email Notification (Non-blocking / Graceful failure)
@@ -402,7 +424,12 @@ async function confirmBooking() {
 
     } catch (err) {
         console.error('Error booking:', err);
-        alert('Wystąpił błąd podczas rezerwacji. Spróbuj ponownie.');
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Wystąpił błąd podczas rezerwacji. Spróbuj ponownie.',
+            icon: 'error',
+            confirmButtonColor: '#dc3545'
+        });
         btn.textContent = 'Rezerwuj ten termin';
         btn.disabled = false;
     }

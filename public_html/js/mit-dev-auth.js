@@ -151,7 +151,13 @@ async function handleRegister(e) {
                 .insert([{ id: data.user.id, role: 'user' }]);
         }
 
-        alert('Konto zostało utworzone! Możesz się teraz zalogować.');
+        Swal.fire({
+            title: 'Sukces!',
+            text: 'Konto zostało utworzone! Możesz się teraz zalogować.',
+            icon: 'success',
+            confirmButtonColor: '#ffc107',
+            confirmButtonText: 'OK'
+        });
         document.getElementById('register-container').classList.add('d-none');
         document.getElementById('login-container').classList.remove('d-none');
 
@@ -172,7 +178,7 @@ async function handleLogout(e) {
         window.location.href = 'login.html';
     } catch (err) {
         console.error('Logout error:', err);
-        alert('Błąd wylogowywania.');
+        Swal.fire('Błąd', 'Błąd wylogowywania.', 'error');
     }
 }
 
@@ -224,7 +230,10 @@ async function updateUIState() {
         }
     } else {
         // Guest: Show sidebar login, Hide profile icon
-        if (authNavItem) authNavItem.classList.remove('d-none');
+        if (authNavItem) {
+            // authNavItem.classList.remove('d-none'); // User requested to hide this button
+            authNavItem.classList.add('d-none');
+        }
         if (userProfileContainer) userProfileContainer.classList.add('d-none');
     }
 }

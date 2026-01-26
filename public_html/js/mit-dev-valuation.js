@@ -111,20 +111,22 @@ function calculateTotal() {
     const offerPrice = totalMarketValue * PROFIT_MARGIN;
 
     // Update UI
-    const totalElement = document.getElementById('total-valuation');
+    // Update UI
     const sendBtn = document.getElementById('send-offer-btn');
 
-    if (totalElement) {
-        if (totalMarketValue > 0) {
-            totalElement.textContent = `${offerPrice.toFixed(0)} zł`;
-            totalElement.style.color = '#28a745'; // Green
+    // Check if any input has user text
+    let hasInput = false;
+    document.querySelectorAll('#section_valuation input').forEach(input => {
+        if (input.value && input.value.trim() !== '' && input.type !== 'hidden') {
+            hasInput = true;
+        }
+    });
 
-            if (sendBtn) sendBtn.style.display = 'inline-block';
+    if (sendBtn) {
+        if (hasInput) {
+            sendBtn.style.display = 'inline-block';
         } else {
-            totalElement.textContent = '0.00 zł';
-            totalElement.style.color = 'inherit';
-
-            if (sendBtn) sendBtn.style.display = 'none';
+            sendBtn.style.display = 'none';
         }
     }
 }
@@ -132,9 +134,7 @@ function calculateTotal() {
 // Offer Submission Logic
 document.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'send-offer-btn') {
-        const totalText = document.getElementById('total-valuation').textContent;
-        const modalPrice = document.getElementById('modal-offer-price');
-        if (modalPrice) modalPrice.textContent = totalText;
+        // No longer updating modal price display
 
         const modalEl = document.getElementById('offerModal');
         if (modalEl) {
@@ -153,7 +153,7 @@ async function submitOffer() {
     const contact = contactInput ? contactInput.value : '';
 
     if (!contact) {
-        alert('Podaj kontakt!');
+        Swal.fire('Uwaga', 'Podaj kontakt!', 'warning');
         return;
     }
 
@@ -165,6 +165,56 @@ async function submitOffer() {
     // Gather components
     const components = [];
     const inputs = document.querySelectorAll('#section_valuation input');
+
+    // Check for file
+    const fileInput = document.getElementById('valuation-photo');
+    let publicUrl = null;
+
+    if (fileInput && fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+
+        // Basic validation
+        if (file.size > 5 * 1024 * 1024) {
+            Swal.fire('Błąd', 'Zdjęcie jest za duże (max 5MB).', 'error');
+            btn.textContent = originalText;
+            btn.disabled = false;
+            return;
+        }
+
+        try {
+            // Dynamic import if not already imported at top, but we do it inside try/catch block below
+            const { supabase } = await import('./supabase-client.js');
+
+            // Generate unique file name: timestamp_random_filename
+            const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
+
+            const { data, error } = await supabase.storage
+                .from('valuation-images')
+                .upload(fileName, file);
+
+            if (error) {
+                console.error('Upload error:', error);
+                // We continue without image or throw error? Let's warn but continue? 
+                // Or better throw to let user know image failed
+                throw new Error('Błąd wysyłania zdjęcia: ' + error.message);
+            }
+
+            // Get Public URL
+            const { data: publicUrlData } = supabase.storage
+                .from('valuation-images')
+                .getPublicUrl(fileName);
+
+            publicUrl = publicUrlData.publicUrl;
+            console.log('Image uploaded:', publicUrl);
+
+        } catch (uploadError) {
+            console.error(uploadError);
+            Swal.fire('Błąd', 'Nie udało się wysłać zdjęcia: ' + uploadError.message, 'error');
+            btn.textContent = originalText;
+            btn.disabled = false;
+            return;
+        }
+    }
 
     // Helper to get price
     const getPrice = (name) => {
@@ -195,7 +245,8 @@ async function submitOffer() {
             client_contact: contact,
             components_json: components,
             client_price: clientPrice,
-            market_price: marketPrice
+            market_price: marketPrice,
+            attachment_url: publicUrl // Save URL
         }]);
 
         if (error) throw error;
@@ -227,7 +278,17 @@ async function submitOffer() {
                                     <td style="padding: 10px; border: 1px solid #ddd;"><strong>Wartość Rynkowa:</strong></td>
                                     <td style="padding: 10px; border: 1px solid #ddd;">${marketPrice.toFixed(2)} zł</td>
                                 </tr>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${marketPrice.toFixed(2)} zł</td>
+                                </tr>
                             </table>
+
+                            ${publicUrl ? `
+                            <div style="margin-top: 20px; text-align: center;">
+                                <p><strong>Dołączone zdjęcie:</strong></p>
+                                <img src="${publicUrl}" alt="Załącznik" style="max-width: 100%; max-height: 400px; border: 1px solid #ccc; border-radius: 5px;">
+                                <p><a href="${publicUrl}" target="_blank" style="color: #198754;">Otwórz w pełnym rozmiarze</a></p>
+                            </div>
+                            ` : ''}
 
                             <h3 style="margin-top: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px;">Lista Podzespołów</h3>
                             <ul style="list-style-type: none; padding: 0;">
@@ -255,14 +316,25 @@ async function submitOffer() {
             console.error('Failed to send valuation email:', emailError);
         }
 
-        alert('Oferta wysłana! Skontaktujemy się z Tobą.');
+        Swal.fire({
+            title: 'Oferta wysłana!',
+            text: 'Skontaktujemy się z Tobą.',
+            icon: 'success',
+            confirmButtonColor: '#198754',
+            confirmButtonText: 'OK'
+        });
         const modalEl = document.getElementById('offerModal');
         const modal = bootstrap.Modal.getInstance(modalEl);
         modal.hide();
 
     } catch (err) {
         console.error('Error submitting offer:', err);
-        alert('Błąd wysyłania: ' + err.message);
+        Swal.fire({
+            title: 'Błąd!',
+            text: 'Błąd wysyłania: ' + err.message,
+            icon: 'error',
+            confirmButtonColor: '#dc3545'
+        });
     } finally {
         btn.textContent = originalText;
         btn.disabled = false;
