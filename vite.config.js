@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
     root: 'public_html',
+    base: './',
     envDir: '../',
     server: {
         open: true
