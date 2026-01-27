@@ -112,29 +112,29 @@ function calculateTotal() {
 
     // Update UI
     // Update UI
-    const sendBtn = document.getElementById('send-offer-btn');
-
-    // Check if any input has user text
-    let hasInput = false;
-    document.querySelectorAll('#section_valuation input').forEach(input => {
-        if (input.value && input.value.trim() !== '' && input.type !== 'hidden') {
-            hasInput = true;
-        }
-    });
-
-    if (sendBtn) {
-        if (hasInput) {
-            sendBtn.style.display = 'inline-block';
-        } else {
-            sendBtn.style.display = 'none';
-        }
-    }
+    // Button visibility logic removed (handled by click validation)
 }
 
 // Offer Submission Logic
 document.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'send-offer-btn') {
-        // No longer updating modal price display
+        // Validate that at least one field is filled
+        let hasInput = false;
+        document.querySelectorAll('#section_valuation input').forEach(input => {
+            if (input.value && input.value.trim() !== '' && input.type !== 'hidden' && input.type !== 'file') {
+                hasInput = true;
+            }
+        });
+
+        if (!hasInput) {
+            Swal.fire({
+                title: 'Pusta oferta?',
+                text: 'Uzupełnij przynajmniej jedno pole (np. Karta graficzna czy Procesor) abyśmy mogli wycenić Twój sprzęt.',
+                icon: 'warning',
+                confirmButtonColor: '#FFCC00'
+            });
+            return;
+        }
 
         const modalEl = document.getElementById('offerModal');
         if (modalEl) {
