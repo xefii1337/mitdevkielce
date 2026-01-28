@@ -1,6 +1,5 @@
 import { supabase } from './supabase-client.js';
-import '../css/mit-dev.css';
-import '../css/mit-dev-sidebar.css';
+
 
 (async function trackPageView() {
   try {
