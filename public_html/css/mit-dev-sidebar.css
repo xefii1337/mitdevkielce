@@ -65,8 +65,8 @@ body:not(.sidebar-collapsed) #desktopSidebarToggle {
 
 @media screen and (max-width: 991px) {
     .custom-block {
-        display: flex !important;
-        /* Force display on smaller screens if hidden */
+        display: none !important;
+        /* Hide on smaller screens to avoid menu overlap */
         position: relative;
         bottom: auto;
         right: auto;

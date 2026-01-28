@@ -144,16 +144,16 @@
             max-width: 100%;
             margin: 0 auto;
             background: white;
-            padding: 20px;
-            border-radius: 1rem;
-        }
-
-        .fc-event {
-            cursor: pointer;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+            font-family: 'Unbounded', sans-serif;
         }
 
         .fc-toolbar-title {
-            font-size: 1.5rem !important;
+            font-weight: 700;
+            color: #2c3e50;
+            letter-spacing: -0.5px;
         }
 
         .fc-button-primary {
@@ -161,62 +161,115 @@
             border-color: var(--primary-color) !important;
             color: #000 !important;
             font-weight: 600;
+            border-radius: 10px !important;
+            padding: 8px 16px !important;
+            transition: all 0.3s ease !important;
         }
 
-        .fc-button-primary:hover {
+        .fc-button-primary:hover,
+        .fc-button-primary:focus {
             background-color: var(--secondary-color) !important;
             border-color: var(--secondary-color) !important;
-            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3) !important;
+            transform: translateY(-2px);
         }
 
-        /* List View Specific Styles */
-        .fc-list {
+        .fc-button-primary:disabled {
+            background-color: #e9ecef !important;
+            border-color: #e9ecef !important;
+            color: #adb5bd !important;
+        }
+
+        /* Clean up the grid */
+        .fc-theme-standard td,
+        .fc-theme-standard th {
+            border-color: #f0f0f0 !important;
+        }
+
+        .fc-col-header-cell-cushion {
+            color: #6c757d;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 15px 0 !important;
+        }
+
+        .fc-daygrid-day-number {
+            color: #2c3e50;
+            font-weight: 600;
+            padding: 8px 12px !important;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .fc-daygrid-day-top {
+            justify-content: end;
+        }
+
+        .fc-day-today .fc-daygrid-day-number {
+            background-color: var(--primary-color);
+            color: #fff;
+        }
+
+        .fc-day-today {
+            background-color: rgba(255, 204, 0, 0.03) !important;
+        }
+
+        /* Event Styles - Modernized */
+        .fc-event {
             border: none !important;
+            border-radius: 6px !important;
+            padding: 3px 5px !important;
+            font-weight: 500;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease;
+        }
+
+        .fc-event:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .fc-daygrid-event-dot {
+            border-color: currentColor !important;
+        }
+
+        /* List View Aesthetics */
+        .fc-list {
+            border: 1px solid #f0f0f0 !important;
+            border-radius: 12px !important;
+            overflow: hidden !important;
         }
 
         .fc-list-day-cushion {
             background-color: #f8f9fa !important;
-            padding: 15px 20px !important;
+            padding: 15px 25px !important;
         }
 
-        .fc-list-day-text,
-        .fc-list-day-side-text {
-            font-family: 'Unbounded', sans-serif;
+        .fc-list-day-text {
             font-weight: 700;
-            color: #2c3e50;
-            font-size: 1.1rem;
-            text-transform: capitalize;
+            color: #343a40;
+            font-size: 1.05rem;
+        }
+
+        .fc-list-event td {
+            padding: 16px 25px !important;
+            border-bottom: 1px solid #f5f5f5 !important;
         }
 
         .fc-list-event:hover td {
             background-color: #fffbf0 !important;
         }
 
-        .fc-list-event td {
-            border-bottom: 1px solid #eee !important;
-            padding: 15px 20px !important;
-        }
-
         .fc-list-event-time {
             font-weight: 600;
             color: var(--primary-color);
-            font-size: 1rem;
-            width: 100px;
         }
 
         .fc-list-event-title {
+            color: #495057;
             font-weight: 500;
-            color: #333;
-            font-size: 1rem;
-        }
-
-        .fc-list-event-dot {
-            border-color: var(--primary-color) !important;
-        }
-
-        /* Remove default borders for cleaner look */
-        .fc-theme-standard .fc-list-day-cushion {
-            border: none !important;
         }
     </style>
     <!-- FullCalendar CSS -->
@@ -331,147 +384,119 @@
                             <div class="col-12">
                                 <div class="card shadow-sm border-0">
                                     <div class="card-body">
-                                        <h5 class="card-title mb-3 fw-bold">Mapa Logowań Użytkowników</h5>
-                                        <div id="world-map" style="height: 400px;"></div>
-
-                                        <!-- Regional Table (Poland) -->
-                                        <div class="accordion mt-4" id="regionAccordion">
-                                            <div class="accordion-item border-0">
-                                                <h2 class="accordion-header" id="headingRegion">
-                                                    <button
-                                                        class="accordion-button collapsed bg-light text-dark fw-bold"
-                                                        type="button" data-bs-toggle="collapse"
-                                                        data-bs-target="#collapseRegion" aria-expanded="false"
-                                                        aria-controls="collapseRegion">
-                                                        <i class="bi-table me-2"></i> Logowania wg Województw (Polska)
-                                                    </button>
-                                                </h2>
-                                                <div id="collapseRegion" class="accordion-collapse collapse"
-                                                    aria-labelledby="headingRegion" data-bs-parent="#regionAccordion">
-                                                    <div class="accordion-body p-0">
-                                                        <div class="table-responsive">
-                                                            <table class="table table-hover mb-0">
-                                                                <thead class="table-light">
-                                                                    <tr>
-                                                                        <th>Województwo</th>
-                                                                        <th class="text-end">Liczba Logowań</th>
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody id="region-table-body">
-                                                                    <!-- Rows will be populated by JS -->
-                                                                </tbody>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
+                                        <h5 class="card-title mb-3 fw-bold">Lokalizacja Serwisu</h5>
+                                        <iframe class="google-map rounded-4 shadow-sm"
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d498.76020904750897!2d20.62895689843566!3d50.862382893910606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471827b0c55e41a5%3A0xb6e14d8ba3d02532!2sMobilny%20Informatyk%20Kielce%20%7C%7C%20Serwis%20PC%20i%20Laptop%C3%B3w%20%7C%7C%20Dojazd%20do%20Klienta*21%20%7C%7C!5e1!3m2!1spl!2spl!4v1741956363913!5m2!1spl!2spl"
+                                            width="100%" height="400" style="border:0;" allowfullscreen=""
+                                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <!-- Valuations Tab -->
-                    <div class="tab-pane fade" id="valuations" role="tabpanel" aria-labelledby="valuations-tab">
-                        <h2 class="mb-4 border-bottom pb-2">Nadesłane Wyceny PC</h2>
-
-                        <div class="table-responsive bg-white p-3 shadow-sm rounded">
-                            <table class="table table-hover align-middle">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Data</th>
-                                        <th>Kontakt</th>
-                                        <th>Podzespoły</th>
-                                        <th>Oferta dla Klienta</th>
-                                        <th>Wartość Rynkowa</th>
-                                        <th>Twój Zysk</th>
-                                        <th>Status</th>
-                                        <th>Akcje</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="valuations-table-body">
-                                    <!-- Valuations will be loaded here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Schedule Tab -->
-                    <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
-                        <h2 class="mb-4 border-bottom pb-2">Harmonogram Wizyt</h2>
-                        <div class="card shadow-sm border-0 bg-white">
-                            <div class="card-body">
-                                <div id="calendar"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Users Tab -->
-                    <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
-                        <h2 class="mb-4 border-bottom pb-2">Zarządzanie Użytkownikami</h2>
-                        <div class="card shadow-sm border-0 bg-white">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Email</th>
-                                                <th>Data Rejestracji</th>
-                                                <th>Rola</th>
-                                                <th>Akcje</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="users-table-body">
-                                            <tr>
-                                                <td colspan="4" class="text-center py-4 text-muted">Ładowanie
-                                                    użytkowników...</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Products Tab -->
-                    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
-                        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                            <h2 class="mb-0">Zarządzanie Produktami</h2>
-                            <button class="btn btn-primary" id="add-product-btn">
-                                <i class="bi-plus-lg me-2"></i> Dodaj Produkt
-                            </button>
-                        </div>
-
-                        <div class="card shadow-sm border-0 bg-white">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th style="width: 80px;">Zdjęcie</th>
-                                                <th>Nazwa</th>
-                                                <th>Kategoria</th>
-                                                <th>Cena</th>
-                                                <th class="text-end">Akcje</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="products-table-body">
-                                            <tr>
-                                                <td colspan="5" class="text-center py-4 text-muted">Ładowanie
-                                                    produktów...</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
-            </main>
         </div>
+    </div>
+
+    <!-- Valuations Tab -->
+    <div class="tab-pane fade" id="valuations" role="tabpanel" aria-labelledby="valuations-tab">
+        <h2 class="mb-4 border-bottom pb-2">Nadesłane Wyceny PC</h2>
+
+        <div class="table-responsive bg-white p-3 shadow-sm rounded">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Data</th>
+                        <th>Kontakt</th>
+                        <th>Podzespoły</th>
+                        <th>Oferta dla Klienta</th>
+                        <th>Wartość Rynkowa</th>
+                        <th>Twój Zysk</th>
+                        <th>Status</th>
+                        <th>Akcje</th>
+                    </tr>
+                </thead>
+                <tbody id="valuations-table-body">
+                    <!-- Valuations will be loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Schedule Tab -->
+    <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
+        <h2 class="mb-4 border-bottom pb-2">Harmonogram Wizyt</h2>
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Tab -->
+    <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
+        <h2 class="mb-4 border-bottom pb-2">Zarządzanie Użytkownikami</h2>
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Email</th>
+                                <th>Data Rejestracji</th>
+                                <th>Rola</th>
+                                <th>Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table-body">
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">Ładowanie
+                                    użytkowników...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Tab -->
+    <div class="tab-pane fade" id="products" role="tabpanel" aria-labelledby="products-tab">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+            <h2 class="mb-0">Zarządzanie Produktami</h2>
+            <button class="btn btn-primary" id="add-product-btn">
+                <i class="bi-plus-lg me-2"></i> Dodaj Produkt
+            </button>
+        </div>
+
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th style="width: 80px;">Zdjęcie</th>
+                                <th>Nazwa</th>
+                                <th>Kategoria</th>
+                                <th>Cena</th>
+                                <th class="text-end">Akcje</th>
+                            </tr>
+                        </thead>
+                        <tbody id="products-table-body">
+                            <tr>
+                                <td colspan="5" class="text-center py-4 text-muted">Ładowanie
+                                    produktów...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </main>
+    </div>
     </div>
 
     <!-- Product Modal -->
@@ -539,64 +564,99 @@
         </div>
     </div>
     <!-- Appointment Details Modal -->
-    <div class="modal" id="appointmentModal" tabindex="-1" aria-hidden="true" style="z-index: 10000;">
+    <div class="modal fade" id="appointmentModal" tabindex="-1" aria-hidden="true" style="z-index: 10000;">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
-                <div class="modal-header border-bottom-0 pb-0">
-                    <h5 class="modal-title fw-bold">Szczegóły Wizyty</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-header border-0 p-4 bg-light">
+                    <div>
+                        <h4 class="modal-title fw-bold text-dark mb-0">Szczegóły Wizyty</h4>
+                        <p class="text-muted small mb-0 mt-1">Podgląd i edycja rezerwacji</p>
+                    </div>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
-                <div class="modal-body pt-4">
+                <div class="modal-body p-4">
                     <form id="appointment-form">
-                        <div class="mb-3">
-                            <label class="form-label text-muted small text-uppercase fw-bold">Klient</label>
-                            <div class="row">
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="modal-client-first-name"
-                                        placeholder="Imię">
+                        <h6 class="text-uppercase text-muted fw-bold small mb-3 letter-spacing-1">Dane Klienta</h6>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-0 bg-light fw-bold"
+                                        id="modal-client-first-name" placeholder="Imię">
+                                    <label for="modal-client-first-name">Imię</label>
                                 </div>
-                                <div class="col-6">
-                                    <input type="text" class="form-control" id="modal-client-last-name"
-                                        placeholder="Nazwisko">
+                            </div>
+                            <div class="col-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-0 bg-light fw-bold"
+                                        id="modal-client-last-name" placeholder="Nazwisko">
+                                    <label for="modal-client-last-name">Nazwisko</label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label text-muted small text-uppercase fw-bold">Termin</label>
-                            <div class="input-group">
-                                <input type="date" class="form-control" id="modal-date">
-                                <input type="time" class="form-control" id="modal-time">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control border-0 bg-light" id="modal-phone"
+                                placeholder="Telefon">
+                            <label for="modal-phone"><i class="bi-telephone me-2"></i>Telefon</label>
+                        </div>
+
+                        <hr class="my-4 text-muted opacity-25">
+
+                        <h6 class="text-uppercase text-muted fw-bold small mb-3 letter-spacing-1">Termin i Miejsce</h6>
+
+                        <div class="row g-2 mb-3">
+                            <div class="col-7">
+                                <div class="form-floating">
+                                    <input type="date" class="form-control border-0 bg-light fw-bold text-primary"
+                                        id="modal-date" placeholder="Data">
+                                    <label for="modal-date">Data</label>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <div class="form-floating">
+                                    <input type="time" class="form-control border-0 bg-light fw-bold text-primary"
+                                        id="modal-time" placeholder="Godzina">
+                                    <label for="modal-time">Godzina</label>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label text-muted small text-uppercase fw-bold">Kontakt</label>
-                            <input type="text" class="form-control mb-2" id="modal-phone" placeholder="Telefon">
-                            <textarea class="form-control" id="modal-address" rows="2" placeholder="Adres"></textarea>
+                        <div class="form-floating mb-3">
+                            <textarea class="form-control border-0 bg-light" id="modal-address" rows="2"
+                                placeholder="Adres" style="height: 80px;"></textarea>
+                            <label for="modal-address"><i class="bi-geo-alt me-2"></i>Adres</label>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label text-muted small text-uppercase fw-bold">Opis Problemu</label>
-                            <textarea class="form-control bg-light" id="modal-problem" rows="3"></textarea>
+                        <div class="form-floating mb-4">
+                            <textarea class="form-control border-0 bg-light" id="modal-problem" rows="3"
+                                placeholder="Opis zgłoszenia" style="height: 100px;"></textarea>
+                            <label for="modal-problem"><i class="bi-chat-text me-2"></i>Opis Problemu</label>
                         </div>
 
-                        <div class="mb-3">
-                            <label class="form-label text-muted small text-uppercase fw-bold">Status</label>
-                            <select class="form-select" id="modal-status">
+                        <div class="form-floating">
+                            <select class="form-select border-0 bg-light fw-bold" id="modal-status">
                                 <option value="confirmed">Potwierdzona</option>
                                 <option value="completed">Zakończona</option>
                                 <option value="cancelled">Anulowana</option>
                             </select>
+                            <label for="modal-status">Status Rezerwacji</label>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer border-top-0 pt-0">
-                    <button type="button" class="btn btn-outline-danger me-auto" id="delete-appointment-btn">
-                        <i class="bi-trash me-2"></i>Usuń
+                <div class="modal-footer border-0 p-4 pt-0">
+                    <button type="button"
+                        class="btn btn-link text-danger text-decoration-none me-auto px-0 py-2 d-flex align-items-center"
+                        id="delete-appointment-btn">
+                        <i class="bi-trash3 me-2"></i>Usuń rezerwację
                     </button>
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Zamknij</button>
-                    <button type="button" class="btn btn-primary px-4" id="save-appointment-btn">Zapisz Zmiany</button>
+                    <button type="button" class="btn btn-light rounded-3 px-4 py-2"
+                        data-bs-dismiss="modal">Anuluj</button>
+                    <button type="button" class="btn btn-warning rounded-3 px-4 py-2 fw-bold shadow-sm"
+                        id="save-appointment-btn" style="background-color: #FFCC00; border: none;">
+                        <i class="bi-check2 me-2"></i>Zapisz Zmiany
+                    </button>
                 </div>
             </div>
         </div>

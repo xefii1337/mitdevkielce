@@ -116,11 +116,38 @@ function calculateTotal() {
 }
 
 // Offer Submission Logic
+// Toggle Logic
+const typePc = document.getElementById('type-pc');
+const typeLaptop = document.getElementById('type-laptop');
+const containerPc = document.getElementById('valuation-pc-container');
+const containerLaptop = document.getElementById('valuation-laptop-container');
+const downloadPdfBtn = document.getElementById('download-pdf-btn');
+
+function updateValuationMode() {
+    if (typeLaptop && typeLaptop.checked) {
+        containerPc.classList.add('d-none');
+        containerLaptop.classList.remove('d-none');
+        // Hide PDF button for laptop (manual valuation)
+        if (downloadPdfBtn) downloadPdfBtn.style.display = 'none';
+    } else {
+        containerPc.classList.remove('d-none');
+        containerLaptop.classList.add('d-none');
+        // Show PDF button for PC if visible/applicable (handled elsewhere)
+    }
+}
+
+if (typePc && typeLaptop) {
+    typePc.addEventListener('change', updateValuationMode);
+    typeLaptop.addEventListener('change', updateValuationMode);
+}
+
 document.addEventListener('click', (e) => {
     if (e.target && e.target.id === 'send-offer-btn') {
-        // Validate that at least one field is filled
+        // Validate based on active mode
         let hasInput = false;
-        document.querySelectorAll('#section_valuation input').forEach(input => {
+        let activeContainer = (typeLaptop && typeLaptop.checked) ? containerLaptop : containerPc;
+
+        activeContainer.querySelectorAll('input').forEach(input => {
             if (input.value && input.value.trim() !== '' && input.type !== 'hidden' && input.type !== 'file') {
                 hasInput = true;
             }
@@ -129,7 +156,7 @@ document.addEventListener('click', (e) => {
         if (!hasInput) {
             Swal.fire({
                 title: 'Pusta oferta?',
-                text: 'Uzupełnij przynajmniej jedno pole (np. Karta graficzna czy Procesor) abyśmy mogli wycenić Twój sprzęt.',
+                text: 'Uzupełnij przynajmniej jedno pole abyśmy mogli wycenić Twój sprzęt.',
                 icon: 'warning',
                 confirmButtonColor: '#FFCC00'
             });
@@ -162,10 +189,6 @@ async function submitOffer() {
     btn.textContent = 'Wysyłanie...';
     btn.disabled = true;
 
-    // Gather components
-    const components = [];
-    const inputs = document.querySelectorAll('#section_valuation input');
-
     // Check for file
     const fileInput = document.getElementById('valuation-photo');
     let publicUrl = null;
@@ -182,30 +205,20 @@ async function submitOffer() {
         }
 
         try {
-            // Dynamic import if not already imported at top, but we do it inside try/catch block below
             const { supabase } = await import('./supabase-client.js');
-
-            // Generate unique file name: timestamp_random_filename
             const fileName = `${Date.now()}_${Math.floor(Math.random() * 1000)}_${file.name.replace(/[^a-zA-Z0-9.-]/g, '')}`;
 
             const { data, error } = await supabase.storage
                 .from('valuation-images')
                 .upload(fileName, file);
 
-            if (error) {
-                console.error('Upload error:', error);
-                // We continue without image or throw error? Let's warn but continue? 
-                // Or better throw to let user know image failed
-                throw new Error('Błąd wysyłania zdjęcia: ' + error.message);
-            }
+            if (error) throw new Error('Błąd wysyłania zdjęcia: ' + error.message);
 
-            // Get Public URL
             const { data: publicUrlData } = supabase.storage
                 .from('valuation-images')
                 .getPublicUrl(fileName);
 
             publicUrl = publicUrlData.publicUrl;
-            console.log('Image uploaded:', publicUrl);
 
         } catch (uploadError) {
             console.error(uploadError);
@@ -216,22 +229,34 @@ async function submitOffer() {
         }
     }
 
-    // Helper to get price
+    // Gather components based on Active Mode
+    const typeLaptop = document.getElementById('type-laptop');
+    const isLaptop = typeLaptop && typeLaptop.checked;
+    const activeContainer = isLaptop ? document.getElementById('valuation-laptop-container') : document.getElementById('valuation-pc-container');
+
+    const components = [];
+    // Helper to get price (only valid for PC components in DB)
     const getPrice = (name) => {
-        if (!name) return 0;
+        if (!name || isLaptop) return 0; // No auto-price for laptops
         const item = hardwareDatabase.find(i => i.name.toLowerCase() === name.toLowerCase());
         return item ? item.marketPrice : 0;
     };
 
-    inputs.forEach(input => {
-        if (input.value && input.type !== 'hidden' && input.id !== 'offer-contact') {
-            const price = getPrice(input.value);
-            if (price > 0) {
-                components.push({
-                    name: input.value,
-                    marketPrice: price
-                });
+    activeContainer.querySelectorAll('input, select').forEach(input => {
+        if (input.value && input.type !== 'hidden' && input.type !== 'file' && input.type !== 'radio' && input.id !== 'offer-contact') {
+            let componentName = input.value;
+            // For Laptop, add label text for context
+            if (isLaptop) {
+                const label = document.querySelector(`label[for="${input.id}"]`);
+                const labelText = label ? label.innerText : input.id;
+                componentName = `[${labelText}] ${input.value}`;
             }
+
+            const price = getPrice(input.value);
+            components.push({
+                name: componentName,
+                marketPrice: price
+            });
         }
     });
 
@@ -259,10 +284,10 @@ async function submitOffer() {
                 const emailParams = {
                     to_email: 'mobilnypomocnik@gmail.com',
                     from_name: contact, // Client contact info
-                    subject: `Nowa Wycena PC: ${contact}`,
+                    subject: `Nowa Wycena ${isLaptop ? 'LAPTOPA' : 'PC'}: ${contact}`,
                     html_body: `
                         <div style="font-family: Arial, sans-serif; color: #333;">
-                            <h2 style="color: #198754;">💻 Nowa Wycena Sprzętu</h2>
+                            <h2 style="color: #198754;">💻 Nowa Wycena Sprzętu (${isLaptop ? 'Laptop' : 'PC'})</h2>
                             <p>Klient przesłał nową konfigurację do wyceny.</p>
                             
                             <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
@@ -272,13 +297,13 @@ async function submitOffer() {
                                 </tr>
                                 <tr>
                                     <td style="padding: 10px; border: 1px solid #ddd;"><strong>Oferta Klienta:</strong></td>
-                                    <td style="padding: 10px; border: 1px solid #ddd; font-size: 18px; color: #198754;"><strong>${clientPrice.toFixed(2)} zł</strong></td>
+                                    <td style="padding: 10px; border: 1px solid #ddd; font-size: 18px; color: #198754;">
+                                        <strong>${clientPrice > 0 ? clientPrice.toFixed(2) + ' zł' : 'Wycena Indywidualna'}</strong>
+                                    </td>
                                 </tr>
                                 <tr style="background-color: #f8f9fa;">
                                     <td style="padding: 10px; border: 1px solid #ddd;"><strong>Wartość Rynkowa:</strong></td>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">${marketPrice.toFixed(2)} zł</td>
-                                </tr>
-                                    <td style="padding: 10px; border: 1px solid #ddd;">${marketPrice.toFixed(2)} zł</td>
+                                    <td style="padding: 10px; border: 1px solid #ddd;">${marketPrice > 0 ? marketPrice.toFixed(2) + ' zł' : '---'}</td>
                                 </tr>
                             </table>
 

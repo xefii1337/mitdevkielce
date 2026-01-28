@@ -105,8 +105,7 @@
 
     <link href="css/bootstrap-icons.css" rel="stylesheet">
 
-    <link href="css/mit-dev.css" rel="stylesheet">
-    <link href="css/mit-dev-sidebar.css" rel="stylesheet">
+    <!-- Custom CSS linked via JS import now -->
     <!-- FullCalendar JS -->
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
 
@@ -290,9 +289,9 @@
 
                 <div
                     class="position-sticky sidebar-sticky d-flex flex-column justify-content-center align-items-center">
-                    <a class="navbar-brand" href="index.html">
-                        <img src="" class="logo-image img-fluid" align="">
-                    </a>
+
+                    <button type="button" class="btn-close d-md-none position-absolute top-0 end-0 m-3"
+                        data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-label="Close"></button>
 
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -327,10 +326,6 @@
                             <a class="nav-link click-scroll" href="#section_5">Kontakt</a>
                         </li>
 
-                        <!-- <li class="nav-item border-top mt-3 pt-3 d-none" id="auth-nav-item">
-                            <a class="nav-link" href="login.html">Zaloguj / Zarejestruj</a>
-                        </li> -->
-
                         <li class="nav-item d-none" id="user-nav-item">
                             <!-- Old sidebar links removed, now using profile dropdown -->
                         </li>
@@ -345,10 +340,13 @@
                         <div class="row">
 
                             <div class="col-lg-8 col-12">
-                                <h1 class="text-white mb-lg-3 mb-4"><strong>Mobilny <em>Informatyk - Naprawa Komputerów
-                                            i Dojazd w Kielcach</em></strong></h1>
-                                <p class="text-white">Profesjonalne usługi których potrzebujesz! Co by się nie działo,
-                                    znajdziemy na to rozwiązanie - problem sam nie zniknie ale my sie tym zajmiemy</p>
+                                <h1 class="text-white mb-lg-3 mb-4"
+                                    style="font-size: clamp(24px, 5vw, 64px) !important;"><strong>Mobilny
+                                        <em>Informatyk - Naprawa Komputerów i Dojazd w Kielcach</em></strong></h1>
+                                <p class="text-white">Profesjonalne usługi, których potrzebujesz! Co by się nie
+                                    działo,
+                                    znajdziemy na to rozwiązanie - problem sam nie zniknie, ale my się tym zajmiemy
+                                </p>
                                 <br>
                                 <a class="btn custom-btn custom-border-btn custom-btn-bg-white smoothscroll me-2 mb-2"
                                     href="#section_2">O nas</a>
@@ -378,13 +376,13 @@
 
                                 <div class="border-bottom pb-3 mb-5">
                                     <p>
-                                    <h2>Mobilny informatyk <a href="https://templatemo.com/page/1"
-                                            target="_blank">Jakub</a></h2>
-                                    <p></a> Co by się nie działo, znajdziemy rozwiązanie dla twoich problemów ze
+                                    <h2>Mobilny informatyk <span class="text-primary">Jakub</span></h2>
+                                    <p>Co by się nie działo, znajdziemy rozwiązanie dla twoich problemów ze
                                         sprzętem!
                                         Zajmujemy się profesjonalną naprawą sprzętu, konfiguracjami systemu,
                                         konfiguracjami urządzeń sieciowych, tworzeniem stanowisk marzeń, budowaniem
-                                        komputerów pod Twoje wymagania - jeżeli nie ma na liście twojego tematu zadzwoń
+                                        komputerów pod Twoje wymagania - jeżeli nie ma na liście twojego tematu
+                                        zadzwoń
                                         do nas! </p>
                                 </div>
                             </div>
@@ -400,7 +398,8 @@
                                         <div class="col-lg-10 col-12 mx-auto">
                                             <h2 class="mb-3 text-white">Zniżka 15%</h2>
 
-                                            <p class="text-white lead">Na wszystkie dostępne usługi ( z wyjątkiem ceny
+                                            <p class="text-white lead">Na wszystkie dostępne usługi ( z wyjątkiem
+                                                ceny
                                                 dojazdu do klienta) </p>
 
                                             <div
@@ -598,59 +597,133 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-12 col-12 text-center">
-                                            <h2 class="mb-5">Wycena PC</h2>
+                                            <h2 class="mb-4">Wycena Sprzętu</h2>
+
+                                            <div class="btn-group mb-5" role="group"
+                                                aria-label="Wybierz rodzaj sprzętu">
+                                                <input type="radio" class="btn-check" name="valuation-type" id="type-pc"
+                                                    autocomplete="off" checked>
+                                                <label
+                                                    class="btn btn-outline-primary px-4 py-2 d-inline-flex align-items-center justify-content-center w-sm-100"
+                                                    for="type-pc" style="min-width: 220px;">
+                                                    <i class="bi-pc-display me-2"></i>PC Stacjonarny
+                                                </label>
+
+                                                <input type="radio" class="btn-check" name="valuation-type"
+                                                    id="type-laptop" autocomplete="off">
+                                                <label
+                                                    class="btn btn-outline-primary px-4 py-2 d-inline-flex align-items-center justify-content-center w-sm-100"
+                                                    for="type-laptop" style="min-width: 220px;">
+                                                    <i class="bi-laptop me-2"></i>Laptop
+                                                </label>
+                                            </div>
                                         </div>
 
                                         <div class="col-lg-8 col-12 mx-auto">
                                             <div class="custom-form booking-form">
                                                 <div class="row">
-                                                    <div class="col-lg-12 col-12">
-                                                        <label for="gpu-input" class="form-label">Karta
-                                                            Graficzna</label>
-                                                        <input class="form-control" list="gpu-list" id="gpu-input"
-                                                            placeholder="Wpisz model (np. RTX 3060)">
-                                                        <datalist id="gpu-list"></datalist>
-                                                    </div>
 
-                                                    <div class="col-lg-12 col-12">
-                                                        <label for="cpu-input" class="form-label">Procesor</label>
-                                                        <input class="form-control" list="cpu-list" id="cpu-input"
-                                                            placeholder="Wpisz model (np. Ryzen 5 5600)">
-                                                        <datalist id="cpu-list"></datalist>
-                                                    </div>
-
-                                                    <div class="col-lg-12 col-12">
-                                                        <label for="mobo-input" class="form-label">Płyta Główna</label>
-                                                        <input class="form-control" list="mobo-list" id="mobo-input"
-                                                            placeholder="Wpisz model (np. B550)">
-                                                        <datalist id="mobo-list"></datalist>
-                                                    </div>
-
-                                                    <div class="col-lg-12 col-12">
-                                                        <label for="ram-input" class="form-label">Pamięć RAM</label>
-                                                        <input class="form-control" list="ram-list" id="ram-input"
-                                                            placeholder="Wpisz model (np. DDR4 16GB)">
-                                                        <datalist id="ram-list"></datalist>
-                                                    </div>
-
-                                                    <div class="col-lg-12 col-12">
-                                                        <label class="form-label">Dyski</label>
-                                                        <div id="disks-container">
-                                                            <div class="disk-entry mb-3">
-                                                                <input class="form-control disk-input" list="disk-list"
-                                                                    placeholder="Wpisz model (np. SSD 1TB)">
-                                                                <datalist id="disk-list"></datalist>
-                                                                <option value="">Wybierz dysk</option>
-                                                                </select>
-                                                            </div>
+                                                    <!-- PC VALUATION SECTION -->
+                                                    <div id="valuation-pc-container" class="col-12 p-0">
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="gpu-input" class="form-label">Karta
+                                                                Graficzna</label>
+                                                            <input class="form-control" list="gpu-list" id="gpu-input"
+                                                                placeholder="Wpisz model (np. RTX 3060)">
+                                                            <datalist id="gpu-list"></datalist>
                                                         </div>
-                                                        <button type="button"
-                                                            class="btn custom-btn custom-border-btn btn-sm mb-4 d-block w-100 d-md-inline-block w-md-auto"
-                                                            id="add-disk-btn">Dodaj kolejny dysk</button>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="cpu-input" class="form-label">Procesor</label>
+                                                            <input class="form-control" list="cpu-list" id="cpu-input"
+                                                                placeholder="Wpisz model (np. Ryzen 5 5600)">
+                                                            <datalist id="cpu-list"></datalist>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="mobo-input" class="form-label">Płyta
+                                                                Główna</label>
+                                                            <input class="form-control" list="mobo-list" id="mobo-input"
+                                                                placeholder="Wpisz model (np. B550)">
+                                                            <datalist id="mobo-list"></datalist>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="ram-input" class="form-label">Pamięć
+                                                                RAM</label>
+                                                            <input class="form-control" list="ram-list" id="ram-input"
+                                                                placeholder="Wpisz model (np. DDR4 16GB)">
+                                                            <datalist id="ram-list"></datalist>
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label class="form-label">Dyski</label>
+                                                            <div id="disks-container">
+                                                                <div class="disk-entry mb-3">
+                                                                    <input class="form-control disk-input"
+                                                                        list="disk-list"
+                                                                        placeholder="Wpisz model (np. SSD 1TB)">
+                                                                    <datalist id="disk-list"></datalist>
+                                                                </div>
+                                                            </div>
+                                                            <button type="button"
+                                                                class="btn custom-btn custom-border-btn btn-sm mb-4 d-block w-100 d-md-inline-block w-md-auto"
+                                                                id="add-disk-btn">Dodaj kolejny dysk</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- LAPTOP VALUATION SECTION -->
+                                                    <div id="valuation-laptop-container" class="col-12 p-0 d-none">
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-brand" class="form-label">Marka</label>
+                                                            <input class="form-control" id="laptop-brand"
+                                                                placeholder="np. Lenovo, Dell, HP">
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-model" class="form-label">Model (z
+                                                                naklejki pod spodem)</label>
+                                                            <input class="form-control" id="laptop-model"
+                                                                placeholder="np. Legion 5 15ACH6H">
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-cpu" class="form-label">Procesor</label>
+                                                            <input class="form-control" id="laptop-cpu"
+                                                                placeholder="np. Intel Core i5-11400H">
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-ram" class="form-label">RAM</label>
+                                                            <input class="form-control" id="laptop-ram"
+                                                                placeholder="np. 16GB">
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-gpu" class="form-label">Karta
+                                                                Graficzna
+                                                                (opcjonalnie)</label>
+                                                            <input class="form-control" id="laptop-gpu"
+                                                                placeholder="np. RTX 3060">
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-disk" class="form-label">Dysk</label>
+                                                            <input class="form-control" id="laptop-disk"
+                                                                placeholder="np. SSD 512GB">
+                                                        </div>
+
+                                                        <div class="col-lg-12 col-12">
+                                                            <label for="laptop-condition" class="form-label">Stan /
+                                                                Wada</label>
+                                                            <input class="form-control" id="laptop-condition"
+                                                                placeholder="np. Sprawny, zbita matryca, nie włącza się">
+                                                        </div>
                                                     </div>
 
                                                     <div class="col-lg-12 col-12 mb-4">
-                                                        <label for="valuation-photo" class="form-label">Dołącz zdjęcie
+                                                        <label for="valuation-photo" class="form-label">Dołącz
+                                                            zdjęcie
                                                             (opcjonalnie)</label>
                                                         <input class="form-control" type="file" id="valuation-photo"
                                                             accept="image/*">
@@ -700,7 +773,8 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body pt-2 pb-4 px-4">
-                                            <p class="mb-4" style="font-size: 1.1rem;">Jesteśmy zainteresowani kupnem
+                                            <p class="mb-4" style="font-size: 1.1rem;">Jesteśmy zainteresowani
+                                                kupnem
                                                 Twojego sprzętu.</p>
 
                                             <div class="alert alert-warning border-0 d-flex align-items-center mb-4"
@@ -709,7 +783,8 @@
                                                 <i class="bi-clock-history me-3 fs-4"></i>
                                                 <div>
                                                     <strong>Szybka wycena!</strong>
-                                                    <div class="small">Odpowiedź otrzymasz w ciągu 2 godzin (w godzinach
+                                                    <div class="small">Odpowiedź otrzymasz w ciągu 2 godzin (w
+                                                        godzinach
                                                         pracy).</div>
                                                 </div>
                                             </div>
@@ -829,7 +904,8 @@
                                                                     class="col-12 d-none">
                                                                     <div class="row">
                                                                         <div class="col-lg-12 col-12 mb-4">
-                                                                            <h5 class="mb-3">Wybierz datę z kalendarza:
+                                                                            <h5 class="mb-3">Wybierz datę z
+                                                                                kalendarza:
                                                                             </h5>
                                                                             <div id="booking-calendar"
                                                                                 style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #dee2e6;">
@@ -839,7 +915,8 @@
                                                                             class="col-lg-6 col-12 mb-4 d-none">
                                                                             <div id="slots-container" class="p-3"
                                                                                 style="background: white; border-radius: 8px; border: 1px solid #dee2e6; min-height: 100%;">
-                                                                                <h5 class="text-center mb-3">Dostępne
+                                                                                <h5 class="text-center mb-3">
+                                                                                    Dostępne
                                                                                     godziny
                                                                                 </h5>
                                                                                 <div id="time-slots"
@@ -847,7 +924,8 @@
                                                                                     style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));">
                                                                                     <p
                                                                                         class="text-muted text-center w-100">
-                                                                                        Wybierz dzień z kalendarza</p>
+                                                                                        Wybierz dzień z kalendarza
+                                                                                    </p>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -865,12 +943,12 @@
                                                     </div>
                                                 </form>
 
-                                                <div id="slot-result" class="mt-4 d-none">
+                                                <div id="slot-result" class="mt-4 d-none text-center">
                                                     <div class="alert alert-info">
                                                         <span id="booking-label">Proponowany termin:</span> <strong
                                                             id="proposed-date"></strong>
                                                     </div>
-                                                    <button type="button" class="btn custom-btn"
+                                                    <button type="button" class="btn custom-btn fs-4 py-3 px-5"
                                                         id="confirm-booking-btn">Rezerwuj ten termin</button>
                                                 </div>
                                             </div>
@@ -884,10 +962,10 @@
 
                             <section class="contact-section" id="section_5">
 
-                                <div class="col-lg-12 col-12 mx-auto mt-5 pt-5">
-                                    <iframe class="google-map"
+                                <div class="col-lg-12 col-12 mx-auto mb-4">
+                                    <iframe class="google-map rounded-4 shadow-sm"
                                         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d498.76020904750897!2d20.62895689843566!3d50.862382893910606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471827b0c55e41a5%3A0xb6e14d8ba3d02532!2sMobilny%20Informatyk%20Kielce%20%7C%7C%20Serwis%20PC%20i%20Laptop%C3%B3w%20%7C%7C%20Dojazd%20do%20Klienta*21%20%7C%7C!5e1!3m2!1spl!2spl!4v1741956363913!5m2!1spl!2spl"
-                                        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
+                                        width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
                                         referrerpolicy="no-referrer-when-downgrade"></iframe>
                                 </div>
 
@@ -954,13 +1032,13 @@
 
                                                         <strong>Godziny otwarcia:</strong>
 
-                                                        <strong class="ms-auto">Poniedziałek : 8:00 - 16:30</strong>
-                                                        <strong class="ms-auto">Wtorek : 8:00 - 16:30</strong>
-                                                        <strong class="ms-auto">Środa : 8:00 - 16:30</strong>
-                                                        <strong class="ms-auto">Czwartek : 8:00 - 16:30</strong>
-                                                        <strong class="ms-auto">Piątek : 8:00 - 16:30</strong>
-                                                        <strong class="ms-auto">Sobota : 8:00 - 16:30</strong>
-                                                        <strong class="ms-auto">Niedziela : 8:00 - 16:30</strong>
+                                                        <strong class="ms-auto">Poniedziałek : 8:00 - 19:00</strong>
+                                                        <strong class="ms-auto">Wtorek : 8:00 - 19:00</strong>
+                                                        <strong class="ms-auto">Środa : 8:00 - 19:00</strong>
+                                                        <strong class="ms-auto">Czwartek : 8:00 - 19:00</strong>
+                                                        <strong class="ms-auto">Piątek : 8:00 - 19:00</strong>
+                                                        <strong class="ms-auto">Sobota : 8:00 - 19:00</strong>
+                                                        <strong class="ms-auto">Niedziela : 8:00 - 19:00</strong>
 
 
                                                     </h6>
@@ -1038,18 +1116,21 @@
                                             <p class="mb-2"><i class="bi-calendar-check text-primary me-2"></i>
                                                 <strong>Termin:</strong> <span id="success-modal-date"></span>
                                             </p>
-                                            <p class="mb-2"><i class="bi-person text-primary me-2"></i> <strong>Imię i
+                                            <p class="mb-2"><i class="bi-person text-primary me-2"></i> <strong>Imię
+                                                    i
                                                     nazwisko:</strong> <span id="success-modal-name"></span></p>
                                             <p class="mb-0"><i class="bi-telephone text-primary me-2"></i>
                                                 <strong>Telefon:</strong> <span id="success-modal-phone"></span>
                                             </p>
                                         </div>
 
-                                        <p class="small text-muted">Potwierdzenie zostało wysłane na nasz system.</p>
+                                        <p class="small text-muted">Potwierdzenie zostało wysłane na nasz system.
+                                        </p>
                                     </div>
                                     <div class="modal-footer border-0 justify-content-center">
                                         <button type="button" class="btn btn-primary px-5" id="success-modal-close-btn"
-                                            data-bs-dismiss="modal">OK, Rozumiem</button>
+                                            data-bs-dismiss="modal">OK,
+                                            Rozumiem</button>
                                     </div>
                                 </div>
                             </div>
