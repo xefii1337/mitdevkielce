@@ -658,12 +658,17 @@ strong {
   color: var(--primary-color);
 }
 
+.price-list-thumb h6 {
+  align-items: flex-end;
+}
+
 .price-list-thumb-divider {
   border-bottom: 2px dotted #d4a000;
   background: transparent;
-  flex: auto;
+  flex-grow: 1;
   height: 0;
-  margin: auto 15px 6px;
+  margin: 0 15px 5px;
+  min-width: 30px;
 }
 
 .price-list-section .custom-block-bg-overlay-wrap {
