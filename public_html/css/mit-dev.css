@@ -1215,11 +1215,11 @@ strong {
   .price-list-thumb h6 {
     overflow: hidden;
   }
-}
 
-/* Make the circle clickable regardless */
-.custom-block::after {
-  content: '📞';
-  font-size: 24px;
-}
+
+  /* Make the circle clickable regardless */
+  .custom-block::after {
+    content: '📞';
+    font-size: 24px;
+  }
 }
