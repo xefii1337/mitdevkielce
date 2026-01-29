@@ -568,37 +568,89 @@ strong {
 /*---------------------------------------
   SERVICES             
 -----------------------------------------*/
+/*---------------------------------------
+  SERVICES             
+-----------------------------------------*/
 .services-thumb {
-  border-radius: var(--border-radius-medium);
+  border-radius: 15px;
+  /* More rounded */
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  /* Subtle base shadow */
+  background: #000;
+  /* Dark background backing */
 }
 
 .services-thumb:hover {
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  /* Stronger blur shadow */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
   z-index: 2;
-  transform: translateY(-5px);
-  /* Lift the card slightly */
+  transform: translateY(-8px);
+  /* slightly more lift */
 }
 
 .services-thumb:hover .services-info {
   opacity: 1 !important;
   transform: translateY(0);
-  pointer-events: auto;
 }
 
 .services-thumb:hover .services-image {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  /* subtler zoom */
+  opacity: 0.4;
+  /* dim image on hover to make text pop */
 }
 
 .services-image {
-  border-radius: var(--border-radius-medium);
+  border-radius: 15px;
   display: block;
   margin: auto;
-  transition: all 0.3s;
+  transition: all 0.5s ease;
   width: 100%;
+  height: 300px;
+  /* Fixed height for consistency */
+  object-fit: cover;
+  /* Ensure image covers area */
+}
+
+.services-info {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.95), transparent);
+  /* Gradient overlay */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 25px;
+  transition: all 0.4s ease;
+  /* Always visible overlay content? Or hover only? */
+  /* Current design seems to hide it unless hovered, or overlay it. */
+  /* Let's make it more modern: Text visible at bottom, expanded on hover? */
+  /* Reverting to previous logic but cleaner: */
+  /* If original logic was opacity 0, keep it or change to persistent label? */
+  /* User requested "Revamp". Let's make text always visible at bottom with gradient. */
+}
+
+.services-info h4 {
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+.services-thumb-price {
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+width: 100%;
 }
 
 .services-thumb-price {
