@@ -1192,28 +1192,31 @@ strong {
     display: none !important;
   }
 
-  /* Mobile Price List Fix */
+  /* Mobile Price List Fix - Professional Alignment */
   .price-list-thumb h6 {
+    display: flex !important;
     align-items: flex-end !important;
+    justify-content: space-between !important;
     flex-wrap: nowrap !important;
   }
 
   .price-list-thumb-divider {
-    min-width: 20px !important;
-    margin: 0 5px 5px !important;
+    flex-grow: 1 !important;
+    flex-shrink: 1 !important;
+    min-width: 30px !important;
+    border-bottom: 2px dotted #d4a000;
+    /* Ensure visibility */
+    margin: 0 10px 5px !important;
+    /* Balanced spacing */
+    height: auto !important;
     display: block !important;
-    flex-shrink: 0 !important;
   }
 
   .price-list-thumb h6 strong {
+    flex-shrink: 0 !important;
     white-space: nowrap !important;
     font-size: 16px !important;
-  }
-
-  /* Allow service name to shrink/wrap if absolutely needed but keep dots? 
-     With nowrap, we risk overflow. Let's try to clamp text if too long. */
-  .price-list-thumb h6 {
-    overflow: hidden;
+    margin-bottom: 0 !important;
   }
 
 
