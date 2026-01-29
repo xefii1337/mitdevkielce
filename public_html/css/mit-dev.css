@@ -1230,4 +1230,14 @@ strong {
     content: '📞';
     font-size: 24px;
   }
+
+  /* Fix overflowing date in booking suggestion */
+  #suggested-date-display {
+    font-size: 22px !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    line-height: 1.2 !important;
+    display: block !important;
+  }
 }
