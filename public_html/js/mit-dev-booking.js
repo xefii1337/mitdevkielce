@@ -158,15 +158,16 @@ function suggestEarliestSlot() {
                 proposedDate = slotDate;
 
                 // Update UI
+                // Update UI
                 const displayEl = document.getElementById('suggested-date-display');
                 if (displayEl) {
-                    displayEl.textContent = slotDate.toLocaleString('pl-PL', {
-                        weekday: 'long',
-                        day: 'numeric',
-                        month: 'long',
-                        hour: '2-digit',
-                        minute: '2-digit'
-                    });
+                    const weekday = slotDate.toLocaleString('pl-PL', { weekday: 'long' });
+                    const day = slotDate.toLocaleString('pl-PL', { day: 'numeric' });
+                    const month = slotDate.toLocaleString('pl-PL', { month: 'long' });
+                    const time = slotDate.toLocaleString('pl-PL', { hour: '2-digit', minute: '2-digit' });
+
+                    // Manually construct string to prevent comma wrapping
+                    displayEl.textContent = `${weekday}, ${day} ${month} ${time}`;
                 }
 
                 const acceptBtn = document.getElementById('accept-suggestion-btn');
