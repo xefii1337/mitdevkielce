@@ -659,10 +659,11 @@ strong {
 }
 
 .price-list-thumb-divider {
-  background: var(--p-color);
+  border-bottom: 2px dotted #d4a000;
+  background: transparent;
   flex: auto;
-  height: 2px;
-  margin: auto 15px 0;
+  height: 0;
+  margin: auto 15px 6px;
 }
 
 .price-list-section .custom-block-bg-overlay-wrap {
