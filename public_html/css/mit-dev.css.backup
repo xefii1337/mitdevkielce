@@ -25,16 +25,16 @@
 
 :root {
   --white-color: #ffffff;
-  --primary-color: #0d6efd;
-  --secondary-color: #0a58ca;
-  --section-bg-color: #f0f2f5;
-  --custom-btn-bg-color: #0d6efd;
+  --primary-color: #FFCC00;
+  --secondary-color: #FFD700;
+  --section-bg-color: #FFD700;
+  --custom-btn-bg-color: #c12828;
   /* przyciskiu */
-  --custom-btn-bg-hover-color: #0b5ed7;
+  --custom-btn-bg-hover-color: #FDBB2D;
   --dark-color: #000000;
   --p-color: #717275;
-  --border-color: #0d6efd;
-  --link-hover-color: #0a58ca;
+  --border-color: #c12828;
+  --link-hover-color: #B22727;
 
   --body-font-family: 'Unbounded', cursive;
 
@@ -451,7 +451,7 @@ strong {
 
 .hero-section::after {
   content: "";
-  background: linear-gradient(90deg, var(--primary-color) 0%, #0dcaf0 100%);
+  background: linear-gradient(90deg, var(--primary-color) 0%, #22C1C3 100%);
   position: absolute;
   top: 0;
   right: 0;
@@ -551,7 +551,7 @@ strong {
 }
 
 .featured-section .section-overlay {
-  background: linear-gradient(90deg, var(--primary-color) 0%, #0dcaf0 100%);
+  background: linear-gradient(90deg, var(--primary-color) 0%, #22C1C3 100%);
   opacity: 1;
 }
 
@@ -714,7 +714,7 @@ strong {
 }
 
 .price-list-thumb-divider {
-  border-bottom: 2px dotted #000000;
+  border-bottom: 2px dotted #d4a000;
   background: transparent;
   flex-grow: 1;
   height: 0;
@@ -824,7 +824,7 @@ strong {
 .custom-form .form-control:focus {
   background: var(--white-color);
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+  box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.1);
 }
 
 .custom-form button[type="submit"] {
@@ -856,7 +856,7 @@ strong {
 
 .site-footer::after {
   content: "";
-  background: linear-gradient(90deg, var(--primary-color) 0%, #0dcaf0 100%);
+  background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%);
   position: absolute;
   right: 0;
   bottom: 0;
@@ -1064,7 +1064,7 @@ strong {
 }
 
 .custom-modal .form-control:focus {
-  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.15);
+  box-shadow: 0 0 0 4px rgba(255, 204, 0, 0.15);
   background-color: var(--white-color);
 }
 
@@ -1092,7 +1092,7 @@ strong {
 
   50% {
     transform: scale(1.02);
-    box-shadow: 0 0.5rem 1.5rem rgba(13, 110, 253, 0.4);
+    box-shadow: 0 0.5rem 1.5rem rgba(255, 204, 0, 0.4);
   }
 
   100% {
@@ -1171,7 +1171,7 @@ strong {
   /* Fix Hero Background on Mobile - USE GRADIENT */
   .hero-section {
     background-image: none !important;
-    background: linear-gradient(90deg, var(--primary-color) 0%, #0dcaf0 100%) !important;
+    background: linear-gradient(90deg, #FDBB2D 0%, #22C1C3 100%) !important;
     background-attachment: scroll;
     padding: 100px 20px 50px 20px !important;
     /* Top padding for fixed header/toggle */
@@ -1255,7 +1255,7 @@ strong {
   .price-list-thumb-divider {
     display: block !important;
     height: 1px !important;
-    background: var(--primary-color) !important;
+    background: #d4a000 !important;
     /* Solid full line color */
     opacity: 0.5;
     /* Subtle look */
@@ -1291,80 +1291,4 @@ strong {
     line-height: 1.2 !important;
     display: block !important;
   }
-}
-
-/* --- New CRO/UX Additions --- */
-
-/* Mobile Floating Call Button */
-.mobile-call-float {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  background-color: var(--primary-color);
-  color: #fff !important;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
-  z-index: 9999;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  animation: pulse-border 2s infinite;
-}
-
-.mobile-call-float:active {
-  transform: scale(0.95);
-}
-
-@keyframes pulse-border {
-  0% {
-    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0.7);
-  }
-
-  70% {
-    box-shadow: 0 0 0 15px rgba(13, 110, 253, 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgba(13, 110, 253, 0);
-  }
-}
-
-/* Emergency Strip */
-.emergency-strip {
-  background-color: var(--primary-color);
-  padding: 1.5rem 0;
-}
-
-.emergency-strip h4,
-.emergency-strip a,
-.emergency-strip i {
-  color: var(--white-color) !important;
-}
-
-.emergency-strip a:hover {
-  text-decoration: underline !important;
-  color: var(--white-color) !important;
-}
-
-/* Testimonials */
-.custom-block-testimonial {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease;
-  border: 1px solid rgba(0, 0, 0, 0.02);
-}
-
-.custom-block-testimonial:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-}
-
-.custom-block-testimonial .rating {
-  font-size: 14px;
 }
