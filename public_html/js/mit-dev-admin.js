@@ -7,6 +7,18 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchUsers();
         fetchLoginMapData();
         fetchValuations();
+        fetchScheduleSettings();
+        
+        // Scroll to content or top on tab change
+        document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(tab => {
+            tab.addEventListener('shown.bs.tab', () => {
+                if (window.innerWidth < 768) {
+                    document.querySelector('.admin-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
     }
 });
 
@@ -960,3 +972,168 @@ document.addEventListener('click', async (e) => {
         }
     }
 });
+
+/* --- SCHEDULE SETTINGS LOGIC --- */
+let scheduleSettingsCache = {
+    default_start_hour: 8.0,
+    default_end_hour: 18.0,
+    closed_days: [],
+    custom_dates: {}
+};
+
+async function fetchScheduleSettings() {
+    try {
+        const { data, error } = await supabase
+            .from('booking_settings')
+            .select('*')
+            .eq('id', 1)
+            .single();
+
+        if (error && error.code !== 'PGRST116') {
+            // Ignore missing row error as we will insert it, but throw others
+            if (error.code !== '42P01') throw error; 
+        }
+
+        if (data) {
+            Object.assign(scheduleSettingsCache, data);
+        }
+
+        // Render to UI
+        if(document.getElementById('default_start_hour')){
+            document.getElementById('default_start_hour').value = scheduleSettingsCache.default_start_hour;
+            document.getElementById('default_end_hour').value = scheduleSettingsCache.default_end_hour;
+            
+            document.querySelectorAll('.closed-day-checkbox').forEach(cb => {
+                cb.checked = scheduleSettingsCache.closed_days.includes(parseInt(cb.value));
+            });
+
+            renderCustomDates();
+            
+            // Event listeners
+            const globalForm = document.getElementById('global-schedule-form');
+            if (globalForm) {
+                globalForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    await saveScheduleSettings();
+                };
+            }
+            
+            const customForm = document.getElementById('custom-date-form');
+            if (customForm) {
+                customForm.onsubmit = async (e) => {
+                    e.preventDefault();
+                    const dDate = document.getElementById('custom_date_input').value;
+                    const isClosed = document.getElementById('custom_date_closed').checked;
+                    const sHour = document.getElementById('custom_start_hour').value;
+                    const eHour = document.getElementById('custom_end_hour').value;
+                    
+                    if (!dDate) return;
+                    
+                    if (isClosed) {
+                        scheduleSettingsCache.custom_dates[dDate] = { closed: true };
+                    } else {
+                        scheduleSettingsCache.custom_dates[dDate] = {
+                            closed: false,
+                            start_hour: parseFloat(sHour),
+                            end_hour: parseFloat(eHour)
+                        };
+                    }
+                    
+                    await saveScheduleSettings();
+                    renderCustomDates();
+                    customForm.reset();
+                    document.querySelectorAll('.custom-hours-group').forEach(el => el.classList.remove('d-none'));
+                };
+            }
+            
+            const customDateClosed = document.getElementById('custom_date_closed');
+            if (customDateClosed) {
+                customDateClosed.addEventListener('change', (e) => {
+                    document.querySelectorAll('.custom-hours-group').forEach(el => {
+                        el.classList.toggle('d-none', e.target.checked);
+                    });
+                });
+            }
+        }
+    } catch (err) {
+        console.error('Error fetching schedule settings:', err);
+    }
+}
+
+function renderCustomDates() {
+    const list = document.getElementById('custom-dates-list');
+    if(!list) return;
+    list.innerHTML = '';
+
+    const dates = Object.keys(scheduleSettingsCache.custom_dates).sort();
+    if (dates.length === 0) {
+        list.innerHTML = '<tr><td colspan="3" class="text-center text-muted">Brak zdefiniowanych wyjątków.</td></tr>';
+        return;
+    }
+
+    dates.forEach(dateStr => {
+        const setting = scheduleSettingsCache.custom_dates[dateStr];
+        let statusHtml = '';
+        if (setting.closed) {
+            statusHtml = '<span class="badge bg-danger">Zamknięte</span>';
+        } else {
+            statusHtml = `<span class="badge bg-info text-dark">Otwarte: ${setting.start_hour} - ${setting.end_hour}</span>`;
+        }
+
+        list.innerHTML += `
+            <tr>
+                <td class="fw-bold">${dateStr}</td>
+                <td>${statusHtml}</td>
+                <td class="text-end">
+                    <button type="button" class="btn btn-sm btn-outline-danger delete-custom-date" data-date="${dateStr}">
+                        <i class="bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+    });
+
+    document.querySelectorAll('.delete-custom-date').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+            const date = btn.dataset.date;
+            delete scheduleSettingsCache.custom_dates[date];
+            await saveScheduleSettings();
+            renderCustomDates();
+        });
+    });
+}
+
+async function saveScheduleSettings() {
+    const startHour = parseFloat(document.getElementById('default_start_hour').value || 8);
+    const endHour = parseFloat(document.getElementById('default_end_hour').value || 18);
+    
+    const closedDays = Array.from(document.querySelectorAll('.closed-day-checkbox:checked'))
+                            .map(cb => parseInt(cb.value));
+                            
+    scheduleSettingsCache.default_start_hour = startHour;
+    scheduleSettingsCache.default_end_hour = endHour;
+    scheduleSettingsCache.closed_days = closedDays;
+
+    try {
+        const { error } = await supabase
+            .from('booking_settings')
+            .upsert({
+                id: 1,
+                default_start_hour: scheduleSettingsCache.default_start_hour,
+                default_end_hour: scheduleSettingsCache.default_end_hour,
+                closed_days: scheduleSettingsCache.closed_days,
+                custom_dates: scheduleSettingsCache.custom_dates
+            });
+
+        if (error) throw error;
+        
+        Swal.fire({
+            toast: true, position: 'top-end',
+            icon: 'success', title: 'Ustawienia zapisane!',
+            showConfirmButton: false, timer: 3000
+        });
+    } catch (error) {
+        console.error(error);
+        Swal.fire('Błąd', error.message, 'error');
+    }
+}

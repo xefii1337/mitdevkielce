@@ -316,6 +316,13 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
+                        <button class="nav-link w-100 text-start" id="schedule-settings-tab" data-bs-toggle="pill"
+                            data-bs-target="#schedule-settings" type="button" role="tab" aria-controls="schedule-settings"
+                            aria-selected="false">
+                            <i class="bi-gear"></i> Ustaw. Kalendarza
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
                         <button class="nav-link w-100 text-start" id="users-tab" data-bs-toggle="pill"
                             data-bs-target="#users" type="button" role="tab" aria-controls="users"
                             aria-selected="false">
@@ -389,14 +396,11 @@
                                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d498.76020904750897!2d20.62895689843566!3d50.862382893910606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471827b0c55e41a5%3A0xb6e14d8ba3d02532!2sMobilny%20Informatyk%20Kielce%20%7C%7C%20Serwis%20PC%20i%20Laptop%C3%B3w%20%7C%7C%20Dojazd%20do%20Klienta*21%20%7C%7C!5e1!3m2!1spl!2spl!4v1741956363913!5m2!1spl!2spl"
                                             width="100%" height="400" style="border:0;" allowfullscreen=""
                                             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-        </div>
-    </div>
+                    </div> <!-- Zamknięcie #dashboard tab-pane -->
 
     <!-- Valuations Tab -->
     <div class="tab-pane fade" id="valuations" role="tabpanel" aria-labelledby="valuations-tab">
@@ -487,6 +491,128 @@
                                 <td colspan="5" class="text-center py-4 text-muted">Ładowanie
                                     produktów...</td>
                             </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Settings Tab -->
+    <div class="tab-pane fade" id="schedule-settings" role="tabpanel" aria-labelledby="schedule-settings-tab">
+        <h2 class="mb-4 border-bottom pb-2">Ustawienia Kalendarza</h2>
+        
+        <div class="card shadow-sm border-0 bg-white mb-4 rounded-4">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-4"><i class="bi-clock me-2 text-warning"></i> Domyślne Godziny Pracy</h5>
+                <form id="global-schedule-form">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label text-muted fw-bold">Godzina Rozpoczęcia</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi-sun"></i></span>
+                                <input type="number" step="0.5" class="form-control bg-light border-0" id="default_start_hour" placeholder="np. 8 (dla 8:00) lub 8.5 (dla 8:30)" required>
+                            </div>
+                            <small class="text-muted">Użyj formatu z kropką np. 8.5 to 8:30.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label text-muted fw-bold">Godzina Zakończenia</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-0"><i class="bi-moon"></i></span>
+                                <input type="number" step="0.5" class="form-control bg-light border-0" id="default_end_hour" placeholder="np. 18 (dla 18:00)" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr class="my-4 text-muted opacity-25">
+                    
+                    <h5 class="card-title fw-bold mb-3"><i class="bi-calendar-x me-2 text-warning"></i> Dni Całkowicie Zamknięte</h5>
+                    <p class="text-muted small mb-3">Zaznacz dni tygodnia, w które Twój serwis nie pracuje. Klienci zobaczą, że terminy w te dni są niedostępne.</p>
+                    
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="1" id="day-1">
+                            <label class="form-check-label fw-bold" for="day-1">Pon</label>
+                        </div>
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="2" id="day-2">
+                            <label class="form-check-label fw-bold" for="day-2">Wto</label>
+                        </div>
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="3" id="day-3">
+                            <label class="form-check-label fw-bold" for="day-3">Śro</label>
+                        </div>
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="4" id="day-4">
+                            <label class="form-check-label fw-bold" for="day-4">Czw</label>
+                        </div>
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="5" id="day-5">
+                            <label class="form-check-label fw-bold" for="day-5">Pią</label>
+                        </div>
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="6" id="day-6">
+                            <label class="form-check-label fw-bold text-danger" for="day-6">Sob</label>
+                        </div>
+                        <div class="form-check bg-light px-4 py-2 rounded-3 me-2">
+                            <input class="form-check-input ms-0 me-2 closed-day-checkbox" type="checkbox" value="0" id="day-0">
+                            <label class="form-check-label fw-bold text-danger" for="day-0">Nie</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-2">
+                        <button type="submit" class="btn btn-warning fw-bold px-4 py-2 rounded-3 shadow-sm" id="save-schedule-settings-btn" style="background-color: #FFCC00; border: none;">
+                            <i class="bi-save me-2"></i>Zapisz Główne Ustawienia
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm border-0 bg-white rounded-4">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-2"><i class="bi-calendar-event me-2 text-warning"></i> Wyjątki i Urlopy</h5>
+                <p class="text-muted small mb-4">Wybierz datę, jeśli idziesz na urlop (dzień zamknięty) lub jeśli wyjątkowo otwierasz krócej z powodu wyjazdu.</p>
+                
+                <form id="custom-date-form" class="bg-light p-3 rounded-3">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-3">
+                            <label class="form-label text-muted fw-bold small">Wybierz Datę</label>
+                            <input type="date" class="form-control border-0 bg-white" id="custom_date_input" required>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check mb-0 mt-md-4">
+                                <input class="form-check-input" type="checkbox" id="custom_date_closed">
+                                <label class="form-check-label fw-bold text-danger" for="custom_date_closed">
+                                    Urlop / Całk. zamknięte
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-2 custom-hours-group">
+                            <label class="form-label text-muted fw-bold small">Praca Od</label>
+                            <input type="number" step="0.5" class="form-control border-0 bg-white" id="custom_start_hour">
+                        </div>
+                        <div class="col-md-2 custom-hours-group">
+                            <label class="form-label text-muted fw-bold small">Praca Do</label>
+                            <input type="number" step="0.5" class="form-control border-0 bg-white" id="custom_end_hour">
+                        </div>
+                        <div class="col-md-2 mt-md-5">
+                            <button type="submit" class="btn btn-primary w-100 rounded-3">Dodaj</button>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="table-responsive mt-4">
+                    <table class="table table-hover align-middle border rounded-3 overflow-hidden">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="px-3 py-3">Data</th>
+                                <th class="px-3 py-3">Reguła w tym dniu</th>
+                                <th class="text-end px-3 py-3">Usuń</th>
+                            </tr>
+                        </thead>
+                        <tbody id="custom-dates-list">
+                            <!-- JS loaded -->
                         </tbody>
                     </table>
                 </div>

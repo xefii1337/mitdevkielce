@@ -21,7 +21,36 @@ if (document.readyState === 'loading') {
 }
 
 let appointmentsCache = [];
+let bookingSettings = {
+    default_start_hour: 8,
+    default_end_hour: 18,
+    closed_days: [],
+    custom_dates: {}
+};
 
+function getDaySettings(date) {
+    const dayOfWeek = date.getDay(); // 0 is Sunday
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const localDateStr = `${year}-${month}-${day}`;
+
+    let isClosed = bookingSettings.closed_days.includes(dayOfWeek);
+    let startHour = bookingSettings.default_start_hour;
+    let endHour = bookingSettings.default_end_hour;
+
+    if (bookingSettings.custom_dates && bookingSettings.custom_dates[localDateStr]) {
+        const custom = bookingSettings.custom_dates[localDateStr];
+        if (custom.closed) {
+            isClosed = true;
+        } else {
+            isClosed = false;
+            if (custom.start_hour !== undefined) startHour = parseFloat(custom.start_hour);
+            if (custom.end_hour !== undefined) endHour = parseFloat(custom.end_hour);
+        }
+    }
+    return { isClosed, startHour, endHour };
+}
 async function initBookingCalendar(retryCount = 0) {
     if (typeof FullCalendar === 'undefined') {
         if (retryCount < 10) {
@@ -37,8 +66,6 @@ async function initBookingCalendar(retryCount = 0) {
     // Fetch all future appointments once and cache them
     // Fetch all future appointments using the secure RPC function
     try {
-        // We use rpc('get_busy_slots') instead of .select() on the table
-        // This prevents exposing personal data (names, phones) to the public.
         const { data: appointments, error } = await supabase
             .rpc('get_busy_slots');
 
@@ -49,6 +76,20 @@ async function initBookingCalendar(retryCount = 0) {
         }
     } catch (err) {
         console.error('Error fetching appointments:', err);
+    }
+
+    try {
+        const { data: settings, error: settingsError } = await supabase
+            .from('booking_settings')
+            .select('*')
+            .eq('id', 1)
+            .single();
+
+        if (!settingsError && settings) {
+            bookingSettings = settings;
+        }
+    } catch (settingsErr) {
+        console.error('Error fetching booking settings:', settingsErr);
     }
 
     const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -134,30 +175,44 @@ function suggestEarliestSlot() {
 
     // Search for next 30 days (increased range to find slot)
     for (let i = 0; i < 30; i++) {
-        // Reset to 8:00 
-        let startHour = 8;
+        const { isClosed, startHour: settingStart, endHour: settingEnd } = getDaySettings(searchDate);
+
+        if (isClosed) {
+            // Move to next day
+            searchDate.setDate(searchDate.getDate() + 1);
+            searchDate.setHours(8, 0, 0, 0);
+            continue;
+        }
+
+        // Reset to default start
+        let startHour = settingStart;
 
         // If it's the very first day of search and it's today, ensure we don't suggest passed hours
         if (i === 0 && searchDate.toDateString() === now.toDateString()) {
-            startHour = Math.max(8, now.getHours() + 1);
+            const decimalNow = now.getHours() + (now.getMinutes() / 60);
+            // Nearest future 30min slot
+            let nearestFutureSlot = Math.ceil(decimalNow * 2) / 2;
+            startHour = Math.max(settingStart, nearestFutureSlot);
         }
 
-        for (let hour = startHour; hour < 18; hour++) {
+        for (let currentHour = startHour; currentHour < settingEnd; currentHour += 0.5) {
+            const h = Math.floor(currentHour);
+            const m = currentHour % 1 === 0 ? 0 : 30;
+            
             const slotDate = new Date(searchDate);
-            slotDate.setHours(hour, 0, 0, 0);
+            slotDate.setHours(h, m, 0, 0);
 
-            // Check if busy
+            // Check if busy (30 min block)
             const isBusy = appointmentsCache.some(appt => {
                 const apptTime = appt.getTime();
                 const slotTime = slotDate.getTime();
-                return Math.abs(apptTime - slotTime) < 60 * 60 * 1000;
+                return Math.abs(apptTime - slotTime) < 30 * 60 * 1000;
             });
 
             if (!isBusy) {
                 // Found it!
                 proposedDate = slotDate;
 
-                // Update UI
                 // Update UI
                 const displayEl = document.getElementById('suggested-date-display');
                 if (displayEl) {
@@ -228,28 +283,36 @@ function handleDateClick(date, dateStr) {
         return;
     }
 
-    // Generate slots from 8:00 to 17:00
-    for (let hour = 8; hour < 18; hour++) {
+    const { isClosed, startHour, endHour } = getDaySettings(selectedDay);
+
+    if (isClosed) {
+        slotsContainer.innerHTML = '<p class="text-danger text-center w-100 fw-bold py-3"><i class="bi bi-door-closed me-2"></i>Serwis jest nieczynny w tym dniu.</p>';
+        return;
+    }
+
+    // Generate slots
+    for (let currentHour = startHour; currentHour < endHour; currentHour += 0.5) {
+        const h = Math.floor(currentHour);
+        const m = currentHour % 1 === 0 ? 0 : 30;
+        
         const slotDate = new Date(selectedDay);
-        slotDate.setHours(hour, 0, 0, 0);
+        slotDate.setHours(h, m, 0, 0);
 
         // Skip past hours if today
-        if (selectedDay.getTime() === today.getTime() && hour <= now.getHours()) {
+        if (selectedDay.getTime() === today.getTime() && slotDate.getTime() <= now.getTime()) {
             continue;
         }
 
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'time-slot-btn';
-        btn.textContent = `${hour}:00`;
+        btn.textContent = `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
 
         // Check availability
         const isBusy = appointmentsCache.some(appt => {
-            // Simple check: if appointment is within this hour
-            // Assuming appointments are 1 hour long for simplicity
             const apptTime = appt.getTime();
             const slotTime = slotDate.getTime();
-            return Math.abs(apptTime - slotTime) < 60 * 60 * 1000;
+            return Math.abs(apptTime - slotTime) < 30 * 60 * 1000;
         });
 
         if (isBusy) {
